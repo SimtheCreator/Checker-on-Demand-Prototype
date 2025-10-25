@@ -167,6 +167,8 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             max-width: 400px; width: 100%; text-align: center;
         }
+         .modal-content label { display: block; text-align: left; margin-bottom: 0.25rem; font-weight: 500; font-size: 0.875rem; color: #4b5563;}
+         .modal-content input, .modal-content select { width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.375rem; margin-bottom: 1rem; }
 
         /* --- App 2 (Checker) Specific Styles --- */
         #app-checker .app-header { background-color: var(--skl-green); }
@@ -202,6 +204,8 @@
         #app-admin .data-table th, #app-admin .data-table td { padding: 0.75rem 1rem; border-bottom: 1px solid #e5e7eb; text-align: left; white-space: nowrap; font-size: 0.875rem; /* Slightly smaller font */}
         #app-admin .data-table th { background: #f3f4f6; font-weight: 600; color: #4b5563; }
         #app-admin .data-table tbody tr:hover { background: #f0f9ff; }
+         #app-admin .data-table .action-button { background: none; border: none; color: #ef4444; cursor: pointer; padding: 0.25rem; } /* Style for remove button */
+         #app-admin .data-table .action-button:hover { color: #b91c1c; }
         /* Urgent Card Adjustment */
         #app-admin .urgent-card { background: #fffbeb; border-left: 5px solid var(--skl-orange); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: flex-start; flex-direction: column; gap: 0.5rem;}
          #app-admin .urgent-card .btn { width: 100%; margin-top: 0.5rem;} /* Full width button */
@@ -741,7 +745,6 @@
     </div>
 
     <!-- ======== APP 4: ADMIN / ZONE (HPLS Panel) ======== -->
-    <!-- **** MODIFIED: Use App Container for Mobile View **** -->
     <div id="app-admin" class="app-wrapper hidden">
          <div class="app-container"> <!-- Use mobile container structure -->
 
@@ -750,22 +753,25 @@
                  <header class="app-header">Queue เคสด่วน (2)</header>
                  <div class="app-content">
                      <p class="text-skl-gray text-sm mb-4">รายการเคส "ประเมินด่วน" ที่ Slot CK ปกติเต็ม</p>
-                     <div class="space-y-4">
-                         <div class="urgent-card shadow-sm">
+                     <!-- **** MODIFIED: Added ID to list **** -->
+                     <div id="urgent-queue-list" class="space-y-4">
+                         <div class="urgent-card shadow-sm" data-customer-name="คุณอารี ยา">
                              <div>
                                  <h3 class="font-semibold text-lg">คุณอารี ยา</h3>
                                  <p class="text-gray-700 text-sm">เหตุผล: <span class="font-medium">ติดเดินทางต่างประเทศ</span></p>
                              </div>
-                             <div><button class="btn btn-primary btn-sm"><i class="fas fa-share-square mr-1"></i> จ่ายงาน</button></div>
+                              <!-- **** MODIFIED: Added onclick to open assign modal **** -->
+                             <div><button class="btn btn-primary btn-sm" onclick="openAssignModal(this)"><i class="fas fa-share-square mr-1"></i> จ่ายงาน</button></div>
                          </div>
-                         <div class="urgent-card shadow-sm">
+                         <div class="urgent-card shadow-sm" data-customer-name="คุณมานะ ดีต่อ">
                              <div>
                                  <h3 class="font-semibold text-lg">คุณมานะ ดีต่อ</h3>
                                  <p class="text-gray-700 text-sm">เหตุผล: <span class="font-medium">อื่นๆ (รีบใช้)</span></p>
                              </div>
-                             <div><button class="btn btn-primary btn-sm"><i class="fas fa-share-square mr-1"></i> จ่ายงาน</button></div>
+                             <div><button class="btn btn-primary btn-sm" onclick="openAssignModal(this)"><i class="fas fa-share-square mr-1"></i> จ่ายงาน</button></div>
                          </div>
                      </div>
+                      <!-- **** END MODIFIED **** -->
                  </div>
                  <!-- Mobile Bottom Nav is added below -->
              </div>
@@ -804,14 +810,24 @@
                  <header class="app-header">จัดการทีม CK</header>
                  <div class="app-content">
                      <p class="text-skl-gray text-sm mb-4">เพิ่ม/ลบ CK ออกจาก Pool</p>
-                     <div class="flex justify-end mb-4"><button class="btn btn-primary btn-sm !w-auto"><i class="fas fa-user-plus mr-1"></i> Add CK</button></div>
+                      <!-- **** MODIFIED: Added onclick to open add modal **** -->
+                     <div class="flex justify-end mb-4"><button class="btn btn-primary btn-sm !w-auto" onclick="showModal('add-checker-modal')"><i class="fas fa-user-plus mr-1"></i> Add CK</button></div>
+                      <!-- **** END MODIFIED **** -->
                      <div class="data-table-container bg-white rounded-lg shadow overflow-hidden">
                          <table class="data-table">
                              <thead><tr><th>รหัส</th><th>ชื่อ</th><th>สถานะ</th><th>Action</th></tr></thead>
-                             <tbody>
-                                 <tr><td>CK001</td><td>สมชาย มุ่งมั่น</td><td><span class="text-skl-green font-medium">Active</span></td><td><button class="btn btn-danger btn-sm !w-auto !py-1 !px-2"><i class="fas fa-user-minus"></i></button></td></tr>
-                                 <tr><td>CK002</td><td>สมหญิง ใจดี</td><td><span class="text-skl-green font-medium">Active</span></td><td><button class="btn btn-danger btn-sm !w-auto !py-1 !px-2"><i class="fas fa-user-minus"></i></button></td></tr>
+                              <!-- **** MODIFIED: Added tbody ID and remove button onclick **** -->
+                             <tbody id="team-table-body">
+                                 <tr>
+                                     <td>CK001</td><td>สมชาย มุ่งมั่น</td><td><span class="text-skl-green font-medium">Active</span></td>
+                                     <td><button class="action-button" onclick="removeChecker(this)"><i class="fas fa-trash-alt"></i></button></td>
+                                 </tr>
+                                 <tr>
+                                     <td>CK002</td><td>สมหญิง ใจดี</td><td><span class="text-skl-green font-medium">Active</span></td>
+                                     <td><button class="action-button" onclick="removeChecker(this)"><i class="fas fa-trash-alt"></i></button></td>
+                                 </tr>
                              </tbody>
+                              <!-- **** END MODIFIED **** -->
                          </table>
                      </div>
                  </div>
@@ -846,7 +862,41 @@
 
          </div> <!-- End App 4 Container -->
     </div> <!-- End App 4 Wrapper -->
-    <!-- **** END MODIFIED **** -->
+
+    <!-- **** ADDED: Modals for Zone Interaction **** -->
+    <!-- Assign Job Modal -->
+    <div id="assign-job-modal" class="modal-overlay hidden" onclick="closeModal('assign-job-modal', event)">
+         <div class="modal-content">
+             <h2 class="text-xl font-semibold mb-4">จ่ายงานด่วน</h2>
+             <p id="assign-customer-name" class="text-skl-gray mb-4">ลูกค้า: คุณอารี ยา</p>
+             <label for="assign-checker-select">เลือก Checker ที่จะมอบหมาย:</label>
+             <select id="assign-checker-select">
+                 <option value="CK001">CK001 - สมชาย มุ่งมั่น</option>
+                 <option value="CK002">CK002 - สมหญิง ใจดี</option>
+                 <option value="CK003">CK003 - สมศักดิ์ (เพิ่มใหม่)</option> <!-- Example -->
+             </select>
+             <div class="flex gap-4 mt-2">
+                 <button class="btn btn-secondary flex-1" onclick="hideModal('assign-job-modal')">ยกเลิก</button>
+                 <button class="btn btn-primary flex-1" onclick="confirmAssignment()">ยืนยัน</button>
+             </div>
+         </div>
+     </div>
+
+     <!-- Add Checker Modal -->
+     <div id="add-checker-modal" class="modal-overlay hidden" onclick="closeModal('add-checker-modal', event)">
+         <div class="modal-content">
+             <h2 class="text-xl font-semibold mb-4">เพิ่ม Checker ใหม่</h2>
+             <label for="new-checker-id">รหัสพนักงาน:</label>
+             <input type="text" id="new-checker-id" placeholder="เช่น CK003">
+             <label for="new-checker-name">ชื่อ - สกุล:</label>
+             <input type="text" id="new-checker-name" placeholder="เช่น สมศักดิ์ ขยันจริง">
+             <div class="flex gap-4 mt-2">
+                 <button class="btn btn-secondary flex-1" onclick="hideModal('add-checker-modal')">ยกเลิก</button>
+                 <button class="btn btn-primary flex-1" onclick="addChecker()">เพิ่ม</button>
+             </div>
+         </div>
+     </div>
+     <!-- **** END ADDED **** -->
 
 
     <script>
@@ -998,39 +1048,114 @@
         function showScreen_AD(screenId) { document.querySelectorAll('#app-ad .app-screen').forEach(el => el.classList.add('hidden')); const scr = document.getElementById(screenId); if(scr){ scr.classList.remove('hidden'); currentScreen_AD = screenId; } else { console.error("AD screen not found:", screenId); document.getElementById('screen-dashboard-ad').classList.remove('hidden'); currentScreen_AD = 'screen-dashboard-ad'; } }
 
         // --- App 4 (Admin / Zone) Logic ---
-        // **** MODIFIED: Simplified showScreen_Admin for Mobile Only ****
         let currentScreen_Admin = 'screen-dashboard-urgent'; // Default screen
+         let jobToAssignElement = null; // Store the element of the job being assigned
+
         function showScreen_Admin(screenId) {
-             // Hide all admin screens within the app-container
              document.querySelectorAll('#app-admin .app-screen').forEach(el => el.classList.add('hidden'));
              const targetScreen = document.getElementById(screenId);
-
              if(targetScreen){
-                 targetScreen.classList.remove('hidden'); // Show the target screen
-                 currentScreen_Admin = screenId; // Update state
-
-                 // Update active state for mobile bottom nav
+                 targetScreen.classList.remove('hidden'); currentScreen_Admin = screenId;
                  document.querySelectorAll('#app-admin .app-nav .nav-item').forEach(link => link.classList.remove('active'));
                  const activeLinks = document.querySelectorAll(`#app-admin .app-nav .nav-item[onclick*="'${screenId}'"]`);
                  activeLinks.forEach(link => { if(link) link.classList.add('active'); });
-
              } else {
                  console.error("Admin screen content not found:", screenId);
-                 // Fallback to default admin screen
-                 showScreen_Admin('screen-dashboard-urgent'); // Recursive call with default
+                 showScreen_Admin('screen-dashboard-urgent');
              }
          }
-         // **** END MODIFIED ****
+
+         // **** ADDED: Zone Interaction Functions ****
+         function openAssignModal(buttonElement) {
+             const card = buttonElement.closest('.urgent-card');
+             if (card) {
+                 jobToAssignElement = card; // Remember which card was clicked
+                 const customerName = card.dataset.customerName || "ไม่ทราบชื่อ";
+                 const modalCustomerName = document.getElementById('assign-customer-name');
+                 if(modalCustomerName) modalCustomerName.innerText = `ลูกค้า: ${customerName}`;
+                 showModal('assign-job-modal');
+             } else {
+                  console.error("Could not find parent card for assignment.");
+             }
+         }
+
+         function confirmAssignment() {
+             const selectedChecker = document.getElementById('assign-checker-select')?.value;
+             if (jobToAssignElement && selectedChecker) {
+                 console.log(`Assigning job for ${jobToAssignElement.dataset.customerName} to ${selectedChecker}`);
+                 jobToAssignElement.remove(); // Remove the card from the list
+                 jobToAssignElement = null; // Clear the stored element
+                 hideModal('assign-job-modal');
+                 // You might want to update the header count here too if needed
+                 const queueHeader = document.querySelector('#screen-dashboard-urgent .app-header');
+                 const remainingItems = document.querySelectorAll('#urgent-queue-list .urgent-card').length;
+                 if (queueHeader) queueHeader.innerText = `Queue เคสด่วน (${remainingItems})`;
+
+             } else {
+                 console.error("No job element stored or checker selected.");
+                 hideModal('assign-job-modal'); // Still hide modal on error or cancel
+             }
+         }
+
+         function addChecker() {
+             const checkerIdInput = document.getElementById('new-checker-id');
+             const checkerNameInput = document.getElementById('new-checker-name');
+             const tableBody = document.getElementById('team-table-body');
+
+             if (checkerIdInput && checkerNameInput && tableBody) {
+                 const checkerId = checkerIdInput.value.trim();
+                 const checkerName = checkerNameInput.value.trim();
+
+                 if (checkerId && checkerName) {
+                     // Create new row
+                     const newRow = document.createElement('tr');
+                     newRow.innerHTML = `
+                         <td>${checkerId}</td>
+                         <td>${checkerName}</td>
+                         <td><span class="text-skl-green font-medium">Active</span></td>
+                         <td><button class="action-button" onclick="removeChecker(this)"><i class="fas fa-trash-alt"></i></button></td>
+                     `;
+                     tableBody.appendChild(newRow);
+
+                     // Clear inputs and hide modal
+                     checkerIdInput.value = '';
+                     checkerNameInput.value = '';
+                     hideModal('add-checker-modal');
+                 } else {
+                      console.warn("Please enter both Checker ID and Name.");
+                      // Maybe show an error message in the modal
+                 }
+             } else {
+                 console.error("Add checker modal elements not found.");
+                 hideModal('add-checker-modal');
+             }
+         }
+
+         function removeChecker(buttonElement) {
+             const row = buttonElement.closest('tr');
+             if (row) {
+                 const checkerName = row.cells[1]?.innerText || 'this checker';
+                 // Simple confirmation using console, replace with a modal if needed
+                 console.log(`Simulating removal of ${checkerName}`);
+                 row.remove();
+                 // Optional: Add visual feedback like a temporary message
+             } else {
+                  console.error("Could not find row to remove.");
+             }
+         }
+         // **** END ADDED ****
 
 
         // --- Initialize ---
         document.addEventListener('DOMContentLoaded', () => {
              try {
-                 // Set initial screen for each persona safely
+                 // Set initial screen content for Admin (will be shown by showAppView)
+                 currentScreen_Admin = 'screen-dashboard-urgent';
+
+                 // Set other personas' initial screens (but keep wrappers hidden)
                  showScreen_Customer('screen-dashboard');
                  showScreen_Checker('screen-dashboard-ck');
                  showScreen_AD('screen-dashboard-ad');
-                 showScreen_Admin('screen-dashboard-urgent'); // Setup initial Admin screen
 
                  showAppView('app-customer'); // Show customer view first
                  generateCalendar(2025, 9);
