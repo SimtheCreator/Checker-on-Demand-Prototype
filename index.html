@@ -28,86 +28,51 @@
         .text-skl-gray { color: var(--skl-gray); }
         .border-skl-gray { border-color: var(--skl-gray); }
 
-        /* --- MODIFIED: Persona Switcher (Collapsible, Top Right) --- */
+        /* --- Persona Switcher (Collapsible, Top Right) --- */
         #persona-switcher-container {
             position: fixed;
-            top: 1.5rem; /* Changed from bottom */
+            top: 1.5rem;
             right: 1.5rem;
             z-index: 1000;
             display: flex;
-            flex-direction: column; /* Keep column layout */
-            align-items: flex-end; /* Align items to the right */
+            flex-direction: column;
+            align-items: flex-end;
             gap: 0.75rem;
         }
         #persona-options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-             /* Add transition for smooth hide/show */
+            display: flex; flex-direction: column; gap: 0.5rem;
             transition: opacity 0.3s ease, transform 0.3s ease;
-            transform-origin: top right; /* Changed from bottom right */
-             /* Place options below the toggle button */
-             order: 2; /* Make options appear after toggle button */
+            transform-origin: top right; order: 2;
         }
-         /* Add state for hidden options */
         #persona-options.hidden {
-            opacity: 0;
-            transform: scale(0.95) translateY(-10px); /* Changed from translateY(10px) */
-            pointer-events: none; /* Prevent clicking hidden buttons */
+            opacity: 0; transform: scale(0.95) translateY(-10px);
+            pointer-events: none;
         }
         #persona-options button {
-            background-color: #374151; /* Darker gray */
-            color: white;
-            border: none;
-            border-radius: 0.5rem;
-            padding: 0.75rem 1rem;
-            font-weight: 600;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            cursor: pointer;
-            transition: background-color 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            white-space: nowrap; /* Prevent wrapping */
+            background-color: #374151; color: white; border: none;
+            border-radius: 0.5rem; padding: 0.75rem 1rem; font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer;
+            transition: background-color 0.2s; display: flex; align-items: center;
+            gap: 0.5rem; white-space: nowrap;
         }
-        #persona-options button:hover {
-            background-color: #4b5563;
-        }
-        #persona-options button.active {
-            background-color: var(--skl-orange);
-        }
+        #persona-options button:hover { background-color: #4b5563; }
+        #persona-options button.active { background-color: var(--skl-orange); }
         #persona-toggle-btn {
-            background-color: #1f2937; /* Even darker gray */
-            color: white;
-            border: none;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            order: 1; /* Make toggle button appear first */
+            background-color: #1f2937; color: white; border: none;
+            width: 60px; height: 60px; border-radius: 50%; font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); cursor: pointer;
+            transition: all 0.2s; display: flex; align-items: center;
+            justify-content: center; order: 1;
         }
-        #persona-toggle-btn:hover {
-            transform: scale(1.1);
-        }
-        /* --- END MODIFIED --- */
+        #persona-toggle-btn:hover { transform: scale(1.1); }
 
-        /* --- Base App Styles (Mobile) --- */
+        /* --- Base App Styles (Mobile Personas: Customer, Checker, AD, Zone) --- */
+        /* Applied to all app wrappers now */
         .app-container {
-            max-width: 420px;
-            height: 95vh;
-            max-height: 900px;
-            margin: auto;
-            border-radius: 1.5rem;
+            max-width: 420px; height: 95vh; max-height: 900px;
+            margin: auto; border-radius: 1.5rem;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            overflow: hidden; display: flex; flex-direction: column;
             background: #f7fafc;
         }
         .app-header {
@@ -142,6 +107,7 @@
             font-weight: 600; text-align: center; cursor: pointer;
             transition: all 0.2s; color: white;
         }
+        .btn-sm { padding: 0.5rem 1rem; font-size: 0.875rem; } /* Small button variant */
         .btn-primary { background-color: var(--skl-green); }
         .btn-secondary { background-color: var(--skl-gray); }
         .btn-danger { background-color: #dc2626; }
@@ -227,30 +193,28 @@
         .mini-step-label { font-size: 0.65rem; color: #6b7280; margin-top: 0.25rem; text-align: center; width: 60px; }
         .mini-step.active .mini-step-label { color: #111827; font-weight: 600; }
 
-        /* --- App 4 (Admin) Specific Styles --- */
-        .panel-container { max-width: 1200px; margin: 2rem auto; display: flex; min-height: 90vh; background: white; border-radius: 0.75rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); overflow: hidden; }
-        .sidebar { width: 250px; background: #1f2937; color: white; padding: 1.5rem; display: flex; flex-direction: column; }
-        .sidebar-header { font-size: 1.5rem; font-weight: 700; margin-bottom: 2rem; text-align: center; color: var(--skl-orange); }
-        .sidebar-nav a { display: flex; align-items: center; padding: 0.875rem 1rem; border-radius: 0.5rem; color: #d1d5db; font-weight: 500; text-decoration: none; transition: all 0.2s; margin-bottom: 0.5rem; }
-        .sidebar-nav a i { margin-right: 0.75rem; width: 20px; }
-        .sidebar-nav a:hover { background: #374151; color: white; }
-        .sidebar-nav a.active { background: var(--skl-orange); color: white; }
-        .main-content { flex-grow: 1; display: flex; flex-direction: column; }
-        .main-header { padding: 1.5rem 2rem; border-bottom: 1px solid #e5e7eb; font-size: 1.75rem; font-weight: 700; color: #111827; }
-        .main-area { flex-grow: 1; padding: 2rem; overflow-y: auto; }
-        .data-table { width: 100%; border-collapse: collapse; }
-        .data-table th, .data-table td { padding: 0.875rem 1.25rem; border-bottom: 1px solid #e5e7eb; text-align: left; }
-        .data-table th { background: #f9fafb; font-weight: 600; color: #4b5563; }
-        .data-table tbody tr:hover { background: #f9fafb; }
-        .urgent-card { background: #fffbeb; border-left: 5px solid var(--skl-orange); padding: 1.25rem; border-radius: 0.5rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
-        .notification-item { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border-bottom: 1px solid #e5e7eb; }
-        .notification-item:hover { background: #f9fafb; }
-        .notification-icon { font-size: 1.25rem; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .notification-icon.high { background: #fef2f2; color: #dc2626; }
-        .notification-icon.medium { background: #fffbeb; color: #d97706; }
-        .notification-icon.low { background: #f0f9ff; color: #2563eb; }
-        .notification-content p { color: #111827; font-weight: 500; }
-        .notification-content .time { font-size: 0.875rem; color: #6b7280; }
+        /* --- App 4 (Admin / Zone - HPLS) Mobile Styles --- */
+        #app-admin .app-header { background-color: #1f2937; } /* Dark header */
+        #app-admin .app-nav .nav-item.active { color: var(--skl-orange); } /* Orange active */
+        /* Table Styles Adjustment for Mobile */
+        #app-admin .data-table-container { overflow-x: auto; /* Make table container scrollable */}
+        #app-admin .data-table { width: 100%; border-collapse: collapse; min-width: 600px; /* Ensure table has min width for scrolling */}
+        #app-admin .data-table th, #app-admin .data-table td { padding: 0.75rem 1rem; border-bottom: 1px solid #e5e7eb; text-align: left; white-space: nowrap; font-size: 0.875rem; /* Slightly smaller font */}
+        #app-admin .data-table th { background: #f3f4f6; font-weight: 600; color: #4b5563; }
+        #app-admin .data-table tbody tr:hover { background: #f0f9ff; }
+        /* Urgent Card Adjustment */
+        #app-admin .urgent-card { background: #fffbeb; border-left: 5px solid var(--skl-orange); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: flex-start; flex-direction: column; gap: 0.5rem;}
+         #app-admin .urgent-card .btn { width: 100%; margin-top: 0.5rem;} /* Full width button */
+         #app-admin .urgent-card h3 { font-size: 1.1rem;}
+        /* Notification Item Adjustment */
+        #app-admin .notification-item { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border-bottom: 1px solid #e5e7eb; }
+        #app-admin .notification-item:hover { background: #f9fafb; }
+        #app-admin .notification-icon { font-size: 1.25rem; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        #app-admin .notification-icon.high { background: #fef2f2; color: #dc2626; }
+        #app-admin .notification-icon.medium { background: #fffbeb; color: #d97706; }
+        #app-admin .notification-icon.low { background: #f0f9ff; color: #2563eb; }
+        #app-admin .notification-content p { color: #111827; font-weight: 500; }
+        #app-admin .notification-content .time { font-size: 0.875rem; color: #6b7280; }
 
     </style>
 </head>
@@ -276,8 +240,8 @@
     <!-- ======== APP 1: CUSTOMER (SKL Mobile App) ======== -->
     <div id="app-customer" class="app-wrapper">
         <div class="app-container">
-
-            <!-- Screen: Dashboard -->
+             <!-- Customer screens here... -->
+             <!-- Screen: Dashboard -->
             <div id="screen-dashboard" class="app-screen h-full flex flex-col">
                 <div class="app-header">
                     <span>หน้าหลัก</span>
@@ -536,8 +500,8 @@
     <!-- ======== APP 2: CHECKER (Mobility App) ======== -->
     <div id="app-checker" class="app-wrapper hidden">
         <div class="app-container">
-
-            <!-- Screen: Dashboard - Job List -->
+            <!-- Checker screens here... -->
+             <!-- Screen: Dashboard - Job List -->
             <div id="screen-dashboard-ck" class="app-screen h-full flex flex-col">
                 <div class="app-header">
                     <span><i class="fas fa-list-check mr-2"></i> งานวันนี้ (2 งาน)</span>
@@ -677,8 +641,8 @@
     <!-- ======== APP 3: AD (Smart Application) ======== -->
     <div id="app-ad" class="app-wrapper hidden">
         <div class="app-container">
-
-            <!-- Screen: Dashboard - Customer List -->
+            <!-- AD screens here... -->
+             <!-- Screen: Dashboard - Customer List -->
             <div id="screen-dashboard-ad" class="app-screen h-full flex flex-col">
                 <div class="app-header">
                     <span><i class="fas fa-users mr-2"></i>ติดตามสถานะลูกค้า</span>
@@ -776,129 +740,113 @@
         </div> <!-- End App 3 Container -->
     </div>
 
-    <!-- ======== APP 4: ADMIN (HPLS Panel) ======== -->
+    <!-- ======== APP 4: ADMIN / ZONE (HPLS Panel) ======== -->
+    <!-- **** MODIFIED: Use App Container for Mobile View **** -->
     <div id="app-admin" class="app-wrapper hidden">
-        <div class="panel-container">
-            <!-- Sidebar -->
-            <nav class="sidebar">
-                <div class="sidebar-header">Zone - HPLS</div>
-                <div class="sidebar-nav">
-                    <a href="#" class="active" onclick="showScreen_Admin('screen-dashboard-urgent')"><i class="fas fa-exclamation-triangle"></i> Queue เคสด่วน</a>
-                    <a href="#" onclick="showScreen_Admin('screen-notifications')"><i class="fas fa-bell"></i> Notification</a>
-                    <a href="#" onclick="showScreen_Admin('screen-team-manage')"><i class="fas fa-users-cog"></i> จัดการทีม CK</a>
-                    <a href="#" onclick="showScreen_Admin('screen-monitor-pool')"><i class="fas fa-chart-bar"></i> Monitor Pool</a>
-                    <a href="#" class="mt-auto"><i class="fas fa-sign-out-alt"></i> ออกจากระบบ</a>
-                </div>
-            </nav>
-            <!-- Main Content -->
-            <main class="main-content">
-                <!-- Screen: Urgent Job Handling -->
-                <div id="screen-dashboard-urgent" class="admin-screen">
-                    <header class="main-header">Queue เคสด่วน (2)</header>
-                    <div class="main-area">
-                        <p class="text-skl-gray mb-6">รายการเคส "ประเมินด่วน" ที่ Slot CK ปกติเต็ม</p>
-                        <div class="space-y-4">
-                            <div class="urgent-card shadow-sm">
-                                <div>
-                                    <h3 class="font-semibold text-lg">คุณอารี ยา</h3>
-                                    <p class="text-gray-700">เหตุผล: <span class="font-medium">ติดเดินทางต่างประเทศ</span></p>
-                                </div>
-                                <div><button class="btn btn-primary"><i class="fas fa-share-square mr-2"></i> จ่ายงาน (Assign)</button></div>
-                            </div>
-                            <div class="urgent-card shadow-sm">
-                                <div>
-                                    <h3 class="font-semibold text-lg">คุณมานะ ดีต่อ</h3>
-                                    <p class="text-gray-700">เหตุผล: <span class="font-medium">อื่นๆ (รีบใช้)</span></p>
-                                </div>
-                                <div><button class="btn btn-primary"><i class="fas fa-share-square mr-2"></i> จ่ายงาน (Assign)</button></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Screen: Notifications -->
-                <div id="screen-notifications" class="admin-screen hidden">
-                    <header class="main-header">Notification</header>
-                    <div class="main-area !p-0">
-                        <div class="notification-list">
-                            <div class="notification-item">
-                                <div class="notification-icon high"><i class="fas fa-exchange-alt"></i></div>
-                                <div class="notification-content">
-                                    <p>CK001 (สมชาย) ร้องขอ "โอนงานฉุกเฉิน"</p>
-                                    <span class="time">2 นาทีที่แล้ว</span>
-                                </div>
-                            </div>
-                            <div class="notification-item">
-                                <div class="notification-icon medium"><i class="fas fa-exclamation-circle"></i></div>
-                                <div class="notification-content">
-                                    <p>เคสด่วน (คุณอารี) ค้างใน Queue นานกว่า 1 ชั่วโมง</p>
-                                    <span class="time">10 นาทีที่แล้ว</span>
-                                </div>
-                            </div>
-                            <div class="notification-item">
-                                <div class="notification-icon low"><i class="fas fa-calendar-times"></i></div>
-                                <div class="notification-content">
-                                    <p>CK002 (สมหญิง) "ปิด Slot" วันที่ 28 ต.ค. (ลาพักร้อน)</p>
-                                    <span class="time">1 ชั่วโมงที่แล้ว</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Screen: Team Management -->
-                <div id="screen-team-manage" class="admin-screen hidden">
-                    <header class="main-header">จัดการทีม CK (โซนกรุงเทพฯ)</header>
-                    <div class="main-area">
-                        <p class="text-skl-gray mb-6">เพิ่ม/ลบ CK ออกจาก Pool (เช่น กรณีหมุนเวียนทีม)</p>
-                        <div class="flex justify-end mb-6"><button class="btn btn-primary !w-auto"><i class="fas fa-user-plus mr-2"></i> Add CK</button></div>
-                        <table class="data-table">
-                            <thead><tr><th>รหัสพนักงาน</th><th>ชื่อ - สกุล</th><th>สถานะ</th><th>Action</th></tr></thead>
-                            <tbody>
-                                <tr><td>CK001</td><td>สมชาย มุ่งมั่น</td><td><span class="text-skl-green font-medium">Active</span></td><td><button class="btn btn-danger !w-auto !py-1 !px-2 !text-sm"><i class="fas fa-user-minus"></i> Remove CK</button></td></tr>
-                                <tr><td>CK002</td><td>สมหญิง ใจดี</td><td><span class="text-skl-green font-medium">Active</span></td><td><button class="btn btn-danger !w-auto !py-1 !px-2 !text-sm"><i class="fas fa-user-minus"></i> Remove CK</button></td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- Screen: Monitor Pool -->
-                <div id="screen-monitor-pool" class="admin-screen hidden">
-                    <header class="main-header">Monitor Pool</header>
-                    <div class="main-area">
-                        <p class="text-skl-gray mb-6">งานทั้งหมดที่ลูกค้านัดหมายไว้ และรอการจ่ายงาน (Job Assignment Engine)</p>
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>วันที่นัดหมาย</th>
-                                    <th>ช่วงเวลา</th>
-                                    <th>ลูกค้า</th>
-                                    <th>สถานะ Pool</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>29 ต.ค. 2025</td> <!-- Updated example date -->
-                                    <td>ช่วงเช้า (9:00 - 12:00 น.)</td>
-                                    <td>คุณมานพ พัฒนา</td>
-                                    <td><span class="text-blue-600 font-medium">รอการจ่ายงาน</span></td>
-                                </tr>
-                                <tr>
-                                    <td>29 ต.ค. 2025</td> <!-- Updated example date -->
-                                    <td>ช่วงบ่าย (13:00 - 17:00 น.)</td>
-                                    <td>คุณอารี ใจดี</td>
-                                    <td><span class="text-blue-600 font-medium">รอการจ่ายงาน</span></td>
-                                </tr>
-                                <tr>
-                                    <td>31 ต.ค. 2025</td> <!-- Updated example date -->
-                                    <td>ช่วงเช้า (9:00 - 12:00 น.)</td>
-                                    <td>คุณสมศักดิ์ ขยัน</td>
-                                    <td><span class="text-blue-600 font-medium">รอการจ่ายงาน</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </main>
-        </div> <!-- End App 4 Container -->
-    </div>
+         <div class="app-container"> <!-- Use mobile container structure -->
+
+             <!-- Screens are now direct children -->
+             <div id="screen-dashboard-urgent" class="app-screen h-full flex flex-col">
+                 <header class="app-header">Queue เคสด่วน (2)</header>
+                 <div class="app-content">
+                     <p class="text-skl-gray text-sm mb-4">รายการเคส "ประเมินด่วน" ที่ Slot CK ปกติเต็ม</p>
+                     <div class="space-y-4">
+                         <div class="urgent-card shadow-sm">
+                             <div>
+                                 <h3 class="font-semibold text-lg">คุณอารี ยา</h3>
+                                 <p class="text-gray-700 text-sm">เหตุผล: <span class="font-medium">ติดเดินทางต่างประเทศ</span></p>
+                             </div>
+                             <div><button class="btn btn-primary btn-sm"><i class="fas fa-share-square mr-1"></i> จ่ายงาน</button></div>
+                         </div>
+                         <div class="urgent-card shadow-sm">
+                             <div>
+                                 <h3 class="font-semibold text-lg">คุณมานะ ดีต่อ</h3>
+                                 <p class="text-gray-700 text-sm">เหตุผล: <span class="font-medium">อื่นๆ (รีบใช้)</span></p>
+                             </div>
+                             <div><button class="btn btn-primary btn-sm"><i class="fas fa-share-square mr-1"></i> จ่ายงาน</button></div>
+                         </div>
+                     </div>
+                 </div>
+                 <!-- Mobile Bottom Nav is added below -->
+             </div>
+
+             <div id="screen-notifications" class="app-screen hidden h-full flex flex-col">
+                 <header class="app-header">Notification</header>
+                 <div class="app-content !p-0"> <!-- Remove padding for list items -->
+                     <div class="notification-list">
+                         <div class="notification-item">
+                             <div class="notification-icon high"><i class="fas fa-exchange-alt"></i></div>
+                             <div class="notification-content">
+                                 <p>CK001 (สมชาย) ร้องขอ "โอนงานฉุกเฉิน"</p>
+                                 <span class="time">2 นาทีที่แล้ว</span>
+                             </div>
+                         </div>
+                         <div class="notification-item">
+                             <div class="notification-icon medium"><i class="fas fa-exclamation-circle"></i></div>
+                             <div class="notification-content">
+                                 <p>เคสด่วน (คุณอารี) ค้างใน Queue นานกว่า 1 ชั่วโมง</p>
+                                 <span class="time">10 นาทีที่แล้ว</span>
+                             </div>
+                         </div>
+                         <div class="notification-item">
+                             <div class="notification-icon low"><i class="fas fa-calendar-times"></i></div>
+                             <div class="notification-content">
+                                 <p>CK002 (สมหญิง) "ปิด Slot" วันที่ 28 ต.ค. (ลาพักร้อน)</p>
+                                 <span class="time">1 ชั่วโมงที่แล้ว</span>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <!-- Mobile Bottom Nav is added below -->
+             </div>
+
+             <div id="screen-team-manage" class="app-screen hidden h-full flex flex-col">
+                 <header class="app-header">จัดการทีม CK</header>
+                 <div class="app-content">
+                     <p class="text-skl-gray text-sm mb-4">เพิ่ม/ลบ CK ออกจาก Pool</p>
+                     <div class="flex justify-end mb-4"><button class="btn btn-primary btn-sm !w-auto"><i class="fas fa-user-plus mr-1"></i> Add CK</button></div>
+                     <div class="data-table-container bg-white rounded-lg shadow overflow-hidden">
+                         <table class="data-table">
+                             <thead><tr><th>รหัส</th><th>ชื่อ</th><th>สถานะ</th><th>Action</th></tr></thead>
+                             <tbody>
+                                 <tr><td>CK001</td><td>สมชาย มุ่งมั่น</td><td><span class="text-skl-green font-medium">Active</span></td><td><button class="btn btn-danger btn-sm !w-auto !py-1 !px-2"><i class="fas fa-user-minus"></i></button></td></tr>
+                                 <tr><td>CK002</td><td>สมหญิง ใจดี</td><td><span class="text-skl-green font-medium">Active</span></td><td><button class="btn btn-danger btn-sm !w-auto !py-1 !px-2"><i class="fas fa-user-minus"></i></button></td></tr>
+                             </tbody>
+                         </table>
+                     </div>
+                 </div>
+                 <!-- Mobile Bottom Nav is added below -->
+             </div>
+
+             <div id="screen-monitor-pool" class="app-screen hidden h-full flex flex-col">
+                 <header class="app-header">Monitor Pool</header>
+                 <div class="app-content">
+                     <p class="text-skl-gray text-sm mb-4">งานทั้งหมดที่รอการจ่ายงาน</p>
+                     <div class="data-table-container bg-white rounded-lg shadow overflow-hidden">
+                         <table class="data-table">
+                             <thead><tr><th>วันที่นัด</th><th>เวลา</th><th>ลูกค้า</th><th>สถานะ</th></tr></thead>
+                             <tbody>
+                                 <tr><td>29 ต.ค. 2568</td><td>ช่วงเช้า</td><td>คุณมานพ พัฒนา</td><td><span class="text-blue-600 font-medium">รอจ่ายงาน</span></td></tr>
+                                 <tr><td>29 ต.ค. 2568</td><td>ช่วงบ่าย</td><td>คุณอารี ใจดี</td><td><span class="text-blue-600 font-medium">รอจ่ายงาน</span></td></tr>
+                                 <tr><td>31 ต.ค. 2568</td><td>ช่วงเช้า</td><td>คุณสมศักดิ์ ขยัน</td><td><span class="text-blue-600 font-medium">รอจ่ายงาน</span></td></tr>
+                             </tbody>
+                         </table>
+                     </div>
+                 </div>
+                 <!-- Mobile Bottom Nav is added below -->
+             </div>
+
+             <!-- Mobile Bottom Navigation for Zone -->
+             <nav class="app-nav">
+                 <div class="nav-item active" onclick="showScreen_Admin('screen-dashboard-urgent')"><i class="fas fa-exclamation-triangle"></i>Queue</div>
+                 <div class="nav-item" onclick="showScreen_Admin('screen-notifications')"><i class="fas fa-bell"></i>Notify</div>
+                 <div class="nav-item" onclick="showScreen_Admin('screen-team-manage')"><i class="fas fa-users-cog"></i>Team</div>
+                 <div class="nav-item" onclick="showScreen_Admin('screen-monitor-pool')"><i class="fas fa-chart-bar"></i>Pool</div>
+             </nav>
+
+         </div> <!-- End App 4 Container -->
+    </div> <!-- End App 4 Wrapper -->
+    <!-- **** END MODIFIED **** -->
 
 
     <script>
@@ -911,400 +859,188 @@
              const modal = document.getElementById(modalId);
              if (modal) modal.classList.add('hidden');
         }
-         // Close modal if clicking outside the content
          function closeModal(modalId, event) {
              const modal = document.getElementById(modalId);
-             if (modal && event.target === modal) {
-                 hideModal(modalId);
-             }
+             if (modal && event.target === modal) { hideModal(modalId); }
          }
 
-        // --- MODIFIED: Persona Switcher Logic ---
+        // --- Persona Switcher Logic ---
         let isPersonaSwitcherOpen = false;
-
         function togglePersonaSwitcher() {
             const options = document.getElementById('persona-options');
             const toggleBtn = document.getElementById('persona-toggle-btn');
             isPersonaSwitcherOpen = !isPersonaSwitcherOpen;
-
-            if (isPersonaSwitcherOpen) {
-                options.classList.remove('hidden');
-                // Optional: Change icon to 'close'
-                toggleBtn.innerHTML = '<i class="fas fa-times"></i>';
-            } else {
-                options.classList.add('hidden');
-                 // Optional: Change icon back to 'users'
-                toggleBtn.innerHTML = '<i class="fas fa-users"></i>';
+            if (options && toggleBtn) {
+                if (isPersonaSwitcherOpen) {
+                    options.classList.remove('hidden');
+                    toggleBtn.innerHTML = '<i class="fas fa-times"></i>';
+                } else {
+                    options.classList.add('hidden');
+                    toggleBtn.innerHTML = '<i class="fas fa-users"></i>';
+                }
             }
         }
-
-        // --- Master View Switcher (Modified to hide switcher on selection) ---
         function showAppView(appId) {
-            // Hide all app wrappers
             document.querySelectorAll('.app-wrapper').forEach(el => el.classList.add('hidden'));
-            // Show the target app wrapper
             const targetApp = document.getElementById(appId);
-             if (targetApp) {
-                 targetApp.classList.remove('hidden');
-             } else {
+             if (targetApp) { targetApp.classList.remove('hidden'); }
+             else {
                  console.error("Target app wrapper not found:", appId);
-                 document.getElementById('app-customer').classList.remove('hidden'); // Fallback
-                 appId = 'app-customer'; // Correct appId for button state
+                 document.getElementById('app-customer').classList.remove('hidden'); appId = 'app-customer';
              }
-
-
-            // Update active button state
             document.querySelectorAll('#persona-options button').forEach(btn => btn.classList.remove('active'));
              const activeButton = document.getElementById('btn-view-' + appId.split('-')[1]);
              if (activeButton) activeButton.classList.add('active');
-
-            // Automatically hide the options after selection
-            isPersonaSwitcherOpen = false; // Reset state
-             // Safely hide options and reset button icon
+            isPersonaSwitcherOpen = false;
              const optionsDiv = document.getElementById('persona-options');
              const toggleBtn = document.getElementById('persona-toggle-btn');
              if (optionsDiv) optionsDiv.classList.add('hidden');
              if (toggleBtn) toggleBtn.innerHTML = '<i class="fas fa-users"></i>';
+             // If switching to Admin, ensure the default screen is shown
+             if (appId === 'app-admin') { showScreen_Admin(currentScreen_Admin || 'screen-dashboard-urgent'); }
         }
-        // --- END MODIFIED ---
-
 
         // --- App 1 (Customer) Logic ---
         let currentScreen_Customer = 'screen-dashboard';
         let selectedDate = null;
-        let selectedTimeSlot = null; // New variable
-        let detailedAddress = ""; // New variable for address
-         // **** UPDATED: Today's date for presentation ****
+        let selectedTimeSlot = null;
+        let detailedAddress = "";
         const today = new Date(2025, 9, 28, 10, 0, 0); // Oct 28, 2025, 10:00 AM
-         // **** END UPDATED ****
         const centralCustomerAddress = "123 หมู่บ้านตัวอย่าง ถ. สุขุมวิท แขวงคลองเตย เขตคลองเตย กรุงเทพมหานคร 10110";
 
         function showScreen_Customer(screenId) {
              document.querySelectorAll('#app-customer .app-nav .nav-item').forEach(item => item.classList.remove('active'));
              document.querySelectorAll('#app-customer .app-screen').forEach(el => el.classList.add('hidden'));
-
             const targetScreen = document.getElementById(screenId);
             if (targetScreen) {
-                 targetScreen.classList.remove('hidden');
-                 currentScreen_Customer = screenId;
+                 targetScreen.classList.remove('hidden'); currentScreen_Customer = screenId;
                  const activeNavItems = document.querySelectorAll(`#app-customer .app-nav .nav-item[onclick*="'${screenId}'"]`);
-                 activeNavItems.forEach(navItem => {
-                     if (navItem) navItem.classList.add('active');
-                 });
+                 activeNavItems.forEach(navItem => { if (navItem) navItem.classList.add('active'); });
             } else {
-                 console.error("Target screen not found:", screenId);
-                 document.getElementById('screen-dashboard').classList.remove('hidden');
-                 currentScreen_Customer = 'screen-dashboard';
+                 console.error("Customer screen not found:", screenId);
+                 document.getElementById('screen-dashboard').classList.remove('hidden'); currentScreen_Customer = 'screen-dashboard';
                  const homeNav = document.querySelector('#app-customer .app-nav .nav-item[onclick*="screen-dashboard"]');
-                 if(homeNav) homeNav.classList.add('active');
-                 return;
+                 if(homeNav) homeNav.classList.add('active'); return;
             }
-
             if (screenId === 'screen-schedule-map') {
                 const addressInput = document.getElementById('detailed-address');
-                if (addressInput) {
-                    addressInput.value = centralCustomerAddress;
-                }
+                if (addressInput) { addressInput.value = centralCustomerAddress; }
             }
-
-            // **** MODIFIED: Time slot logic for Oct 28 ****
             if (screenId === 'screen-schedule-time') {
-                const slotAm = document.getElementById('slot-am');
-                const slotPm = document.getElementById('slot-pm');
-                if (slotAm) slotAm.classList.remove('disabled', 'selected');
-                if (slotPm) slotPm.classList.remove('disabled', 'selected');
-                 // Check if the selected date is today (Oct 28)
+                const slotAm = document.getElementById('slot-am'); const slotPm = document.getElementById('slot-pm');
+                if (slotAm) slotAm.classList.remove('disabled', 'selected'); if (slotPm) slotPm.classList.remove('disabled', 'selected');
                 if (selectedDate && selectedDate.toDateString() === today.toDateString()) {
-                     // Disable morning slot regardless of the current time for Oct 28
-                    if (slotAm) slotAm.classList.add('disabled');
+                    if (slotAm) slotAm.classList.add('disabled'); // Disable AM slot for Oct 28
                 }
-                 // For other dates, both slots are enabled by default (unless full in a real app)
             }
-             // **** END MODIFIED ****
-
             if (screenId === 'screen-schedule-summary') {
-                 const summaryDateEl = document.getElementById('summary-date');
-                 const summaryTimeEl = document.getElementById('summary-time');
-                 const summaryAddressEl = document.getElementById('summary-address');
-                if (selectedDate && summaryDateEl) {
-                     summaryDateEl.innerText = selectedDate.toLocaleDateString('th-TH', { dateStyle: 'long' });
-                }
-                if (selectedTimeSlot && summaryTimeEl) {
-                    summaryTimeEl.innerText = selectedTimeSlot;
-                } else if (summaryTimeEl) {
-                     summaryTimeEl.innerText = "ยังไม่ได้เลือกเวลา";
-                }
-                 if (summaryAddressEl) {
-                     summaryAddressEl.innerText = detailedAddress || "ยังไม่ได้กรอก";
-                 }
+                 const summaryDateEl = document.getElementById('summary-date'); const summaryTimeEl = document.getElementById('summary-time'); const summaryAddressEl = document.getElementById('summary-address');
+                if (selectedDate && summaryDateEl) { summaryDateEl.innerText = selectedDate.toLocaleDateString('th-TH', { dateStyle: 'long' }); }
+                if (selectedTimeSlot && summaryTimeEl) { summaryTimeEl.innerText = selectedTimeSlot; } else if (summaryTimeEl) { summaryTimeEl.innerText = "ยังไม่ได้เลือกเวลา"; }
+                 if (summaryAddressEl) { summaryAddressEl.innerText = detailedAddress || "ยังไม่ได้กรอก"; }
             }
         }
-
         function navigateToTimeSelection() {
-            if (selectedDate) {
-                showScreen_Customer('screen-schedule-time');
-            } else {
+            if (selectedDate) { showScreen_Customer('screen-schedule-time'); }
+            else {
                 console.warn('กรุณาเลือกวันที่ที่ว่างก่อนครับ');
                 const calendarElement = document.getElementById('customer-calendar-grid');
-                if(calendarElement){
-                    let errorMsg = calendarElement.parentElement.querySelector('.error-message');
-                    if (!errorMsg) {
-                        errorMsg = document.createElement('p');
-                        errorMsg.className = 'error-message text-red-600 text-center mt-2';
-                        calendarElement.parentElement.insertAdjacentElement('afterend', errorMsg);
-                    }
-                    errorMsg.innerText = 'กรุณาเลือกวันที่ที่ว่างก่อนครับ';
-                }
+                if(calendarElement){ let errorMsg = calendarElement.parentElement.querySelector('.error-message'); if (!errorMsg) { errorMsg = document.createElement('p'); errorMsg.className = 'error-message text-red-600 text-center mt-2'; calendarElement.parentElement.insertAdjacentElement('afterend', errorMsg); } errorMsg.innerText = 'กรุณาเลือกวันที่ที่ว่างก่อนครับ'; }
             }
         }
-
         function selectDate(element) {
-            if (!element || element.classList.contains('disabled') || element.classList.contains('full')) {
-                return;
-            }
+            if (!element || element.classList.contains('disabled') || element.classList.contains('full')) { return; }
             document.querySelectorAll('#app-customer .calendar-day.selected').forEach(el => el.classList.remove('selected'));
-            element.classList.add('selected');
-
-            const day = parseInt(element.innerText);
+            element.classList.add('selected'); const day = parseInt(element.innerText);
             if (!isNaN(day)) {
-                 selectedDate = new Date(2025, 9, day);
-                 const selectedDateTextEl = document.getElementById('selected-date-text');
-                 if (selectedDateTextEl) {
-                      // Display the newly selected date
-                      selectedDateTextEl.innerText = `วันที่เลือก: ${selectedDate.toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' })}`;
-                 }
-                 const calendarElement = document.getElementById('customer-calendar-grid');
-                 if(calendarElement){
-                     const errorMsg = calendarElement.parentElement.querySelector('.error-message');
-                     if(errorMsg) errorMsg.innerText = '';
-                 }
-            } else {
-                 console.error("Invalid day selected from element:", element);
-                 selectedDate = null;
-            }
+                 selectedDate = new Date(2025, 9, day); const selectedDateTextEl = document.getElementById('selected-date-text');
+                 if (selectedDateTextEl) { selectedDateTextEl.innerText = `วันที่เลือก: ${selectedDate.toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' })}`; }
+                 const calendarElement = document.getElementById('customer-calendar-grid'); if(calendarElement){ const errorMsg = calendarElement.parentElement.querySelector('.error-message'); if(errorMsg) errorMsg.innerText = ''; }
+            } else { console.error("Invalid day selected:", element); selectedDate = null; }
         }
-
-
         function selectTime(element, timeString) {
-            if (!element || element.classList.contains('disabled')) {
-                return;
-            }
+            if (!element || element.classList.contains('disabled')) { return; }
             document.querySelectorAll('#app-customer .time-slot').forEach(el => el.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedTimeSlot = timeString;
+            element.classList.add('selected'); selectedTimeSlot = timeString;
         }
-
-        function handleFullDayClick() {
-             showModal('full-day-warning-modal');
-             selectedDate = null;
-             document.querySelectorAll('#app-customer .calendar-day.selected').forEach(el => el.classList.remove('selected'));
-        }
-
-        function showUrgentRequestFromWarning() {
-            hideModal('full-day-warning-modal');
-            showModal('screen-urgent-popup');
-        }
-
+        function handleFullDayClick() { showModal('full-day-warning-modal'); selectedDate = null; document.querySelectorAll('#app-customer .calendar-day.selected').forEach(el => el.classList.remove('selected')); }
+        function showUrgentRequestFromWarning() { hideModal('full-day-warning-modal'); showModal('screen-urgent-popup'); }
         function generateCalendar(year, month) {
-            const calendarGrid = document.getElementById('customer-calendar-grid');
-            if (!calendarGrid) { console.error("Calendar grid element not found"); return; }
-            calendarGrid.innerHTML = '';
-
-            const headers = ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'];
-            headers.forEach(header => {
-                const headerEl = document.createElement('div');
-                headerEl.className = 'calendar-header';
-                headerEl.innerText = header;
-                calendarGrid.appendChild(headerEl);
-            });
-
-            const firstDayOfMonth = new Date(year, month, 1).getDay();
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-            for (let i = 0; i < firstDayOfMonth; i++) {
-                const padEl = document.createElement('div');
-                padEl.className = 'calendar-day disabled';
-                calendarGrid.appendChild(padEl);
-            }
-
-            // Get today's date without time for comparison
+            const calendarGrid = document.getElementById('customer-calendar-grid'); if (!calendarGrid) { console.error("Calendar grid not found"); return; } calendarGrid.innerHTML = '';
+            const headers = ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส']; headers.forEach(h => { const el = document.createElement('div'); el.className = 'calendar-header'; el.innerText = h; calendarGrid.appendChild(el); });
+            const firstDayOfMonth = new Date(year, month, 1).getDay(); const daysInMonth = new Date(year, month + 1, 0).getDate();
+            for (let i = 0; i < firstDayOfMonth; i++) { const el = document.createElement('div'); el.className = 'calendar-day disabled'; calendarGrid.appendChild(el); }
             const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
             for (let day = 1; day <= daysInMonth; day++) {
-                const dayEl = document.createElement('div');
-                dayEl.innerText = day;
-                const currentDate = new Date(year, month, day);
-                const dayOfWeek = currentDate.getDay();
-                let classes = ['calendar-day'];
-                let onclickFunc = () => selectDate(dayEl);
-
-                // Disable past dates (before Oct 28) and Sundays
-                if (currentDate < todayDateOnly || dayOfWeek === 0) {
-                    classes.push('disabled'); onclickFunc = null;
-                }
-                // Highlight today (Oct 28)
-                else if (currentDate.getTime() === todayDateOnly.getTime()) {
-                    classes.push('today');
-                }
-                // Keep Oct 30 as the 'full' day example
-                else if (day === 30) { // Removed day 25, keep 30 as example
-                    classes.push('full'); onclickFunc = handleFullDayClick;
-                }
-                // Saturdays (dayOfWeek === 6) are clickable by default
-
-                dayEl.className = classes.join(' ');
-                if (onclickFunc) { dayEl.onclick = onclickFunc; }
-                calendarGrid.appendChild(dayEl);
+                const dayEl = document.createElement('div'); dayEl.innerText = day; const currentDate = new Date(year, month, day); const dayOfWeek = currentDate.getDay(); let classes = ['calendar-day']; let onclickFunc = () => selectDate(dayEl);
+                if (currentDate < todayDateOnly || dayOfWeek === 0) { classes.push('disabled'); onclickFunc = null; }
+                else if (currentDate.getTime() === todayDateOnly.getTime()) { classes.push('today'); }
+                else if (day === 30) { classes.push('full'); onclickFunc = handleFullDayClick; }
+                dayEl.className = classes.join(' '); if (onclickFunc) { dayEl.onclick = onclickFunc; } calendarGrid.appendChild(dayEl);
             }
         }
-
-        function rateStar(element, rating) {
-             if (!element) return;
-            const parent = element.parentElement;
-             if (!parent) return;
-            const stars = parent.querySelectorAll('i');
-            stars.forEach((star, index) => {
-                 if (star) { star.className = index < rating ? 'fas fa-star selected' : 'far fa-star'; }
-            });
-             parent.dataset.rating = rating;
-        }
-
-        function submitUrgentRequest() {
-            hideModal('screen-urgent-popup');
-            showScreen_Customer('screen-dashboard');
-            const feedbackTrigger = document.getElementById('feedback-popup-trigger');
-            if(feedbackTrigger){
-                feedbackTrigger.innerHTML = "<p class='font-bold'>ส่งคำขอประเมินด่วนสำเร็จแล้ว</p><p>หน.โซนจะติดต่อกลับ</p>";
-                feedbackTrigger.className = "bg-blue-500 border-l-4 border-blue-700 text-white p-4 rounded-lg shadow mb-6";
-                feedbackTrigger.classList.remove('hidden');
-            }
-        }
-        function submitFeedback() {
-            showScreen_Customer('screen-dashboard');
-            const feedbackTrigger = document.getElementById('feedback-popup-trigger');
-            if(feedbackTrigger){
-                feedbackTrigger.innerHTML = "<p class='font-bold'>ขอบคุณสำหรับคะแนน</p>";
-                feedbackTrigger.className = "bg-skl-green border-l-4 border-green-700 text-white p-4 rounded-lg shadow mb-6";
-                feedbackTrigger.classList.remove('hidden');
-            }
-             disableFeedbackNav();
-        }
-        function updateChecklist(value) {
-            const hide = (id) => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); };
-            const show = (id) => { const el = document.getElementById(id); if (el) el.classList.remove('hidden'); };
-            hide('checklist-bkk'); hide('checklist-kaset'); hide('checklist-rao');
-            show('checklist-' + value);
-        }
-
-        function goToSummary() {
-            const addressInput = document.getElementById('detailed-address');
-            if (addressInput) {
-                detailedAddress = addressInput.value.trim();
-                if (!detailedAddress) {
-                    console.warn('กรุณากรอกหรือยืนยันที่อยู่');
-                    addressInput.focus();
-                    let errorMsg = addressInput.parentElement.querySelector('.error-message');
-                    if (!errorMsg) {
-                        errorMsg = document.createElement('p');
-                        errorMsg.className = 'error-message text-red-600 text-sm mt-1';
-                        addressInput.insertAdjacentElement('afterend', errorMsg);
-                    }
-                    errorMsg.innerText = 'กรุณากรอกหรือยืนยันที่อยู่';
-                    return;
-                }
-                 let errorMsg = addressInput.parentElement.querySelector('.error-message');
-                 if (errorMsg) errorMsg.innerText = '';
-                showScreen_Customer('screen-schedule-summary');
-            } else { console.error("Detailed address input not found"); }
-        }
-
-        function enableFeedbackNav() {
-            const navItems = document.querySelectorAll('#nav-feedback-customer, #nav-feedback-customer-alt, #nav-feedback-customer-alt2');
-            navItems.forEach(item => { if (item) item.classList.remove('disabled'); });
-        }
-        function disableFeedbackNav() {
-            const navItems = document.querySelectorAll('#nav-feedback-customer, #nav-feedback-customer-alt, #nav-feedback-customer-alt2');
-            navItems.forEach(item => { if (item) item.classList.add('disabled'); });
-        }
+        function rateStar(element, rating) { if (!element || !element.parentElement) return; const parent = element.parentElement; const stars = parent.querySelectorAll('i'); stars.forEach((star, index) => { if (star) { star.className = index < rating ? 'fas fa-star selected' : 'far fa-star'; } }); parent.dataset.rating = rating; }
+        function submitUrgentRequest() { hideModal('screen-urgent-popup'); showScreen_Customer('screen-dashboard'); const fb = document.getElementById('feedback-popup-trigger'); if(fb){ fb.innerHTML = "<p class='font-bold'>ส่งคำขอประเมินด่วนสำเร็จ</p><p>หน.โซนจะติดต่อกลับ</p>"; fb.className = "bg-blue-500 border-l-4 border-blue-700 text-white p-4 rounded-lg shadow mb-6"; fb.classList.remove('hidden'); } }
+        function submitFeedback() { showScreen_Customer('screen-dashboard'); const fb = document.getElementById('feedback-popup-trigger'); if(fb){ fb.innerHTML = "<p class='font-bold'>ขอบคุณสำหรับคะแนน</p>"; fb.className = "bg-skl-green border-l-4 border-green-700 text-white p-4 rounded-lg shadow mb-6"; fb.classList.remove('hidden'); } disableFeedbackNav(); }
+        function updateChecklist(value) { const hide = (id) => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); }; const show = (id) => { const el = document.getElementById(id); if (el) el.classList.remove('hidden'); }; hide('checklist-bkk'); hide('checklist-kaset'); hide('checklist-rao'); show('checklist-' + value); }
+        function goToSummary() { const addr = document.getElementById('detailed-address'); if (addr) { detailedAddress = addr.value.trim(); if (!detailedAddress) { console.warn('กรุณากรอกหรือยืนยันที่อยู่'); addr.focus(); let err = addr.parentElement.querySelector('.error-message'); if (!err) { err = document.createElement('p'); err.className = 'error-message text-red-600 text-sm mt-1'; addr.insertAdjacentElement('afterend', err); } err.innerText = 'กรุณากรอกหรือยืนยันที่อยู่'; return; } let err = addr.parentElement.querySelector('.error-message'); if (err) err.innerText = ''; showScreen_Customer('screen-schedule-summary'); } else { console.error("Address input not found"); } }
+        function enableFeedbackNav() { document.querySelectorAll('#nav-feedback-customer, #nav-feedback-customer-alt, #nav-feedback-customer-alt2').forEach(item => { if (item) item.classList.remove('disabled'); }); }
+        function disableFeedbackNav() { document.querySelectorAll('#nav-feedback-customer, #nav-feedback-customer-alt, #nav-feedback-customer-alt2').forEach(item => { if (item) item.classList.add('disabled'); }); }
 
         // --- App 2 (Checker) Logic ---
         let currentScreen_Checker = 'screen-dashboard-ck';
-        function showScreen_Checker(screenId) {
-            document.querySelectorAll('#app-checker .app-screen').forEach(el => el.classList.add('hidden'));
-            const targetScreen = document.getElementById(screenId);
-            if (targetScreen) {
-                targetScreen.classList.remove('hidden');
-                currentScreen_Checker = screenId;
-            } else {
-                console.error("Checker screen not found:", screenId);
-                 document.getElementById('screen-dashboard-ck').classList.remove('hidden');
-                 currentScreen_Checker = 'screen-dashboard-ck';
-            }
-        }
-        function selectDay_Checker(element) {
-             if (!element) return;
-            document.querySelectorAll('#app-checker .calendar-day.selected').forEach(el => el.classList.remove('selected'));
-            element.classList.add('selected');
-        }
-        function finishJob() {
-            console.log('จำลองการ "จบภารกิจ" - (Trigger Popup ใน SKL App ของลูกค้า)');
-            showScreen_Checker('screen-dashboard-ck');
-            const feedbackTrigger = document.getElementById('feedback-popup-trigger');
-            if (feedbackTrigger) feedbackTrigger.classList.remove('hidden');
-             enableFeedbackNav();
-        }
+        function showScreen_Checker(screenId) { document.querySelectorAll('#app-checker .app-screen').forEach(el => el.classList.add('hidden')); const scr = document.getElementById(screenId); if (scr) { scr.classList.remove('hidden'); currentScreen_Checker = screenId; } else { console.error("Checker screen not found:", screenId); document.getElementById('screen-dashboard-ck').classList.remove('hidden'); currentScreen_Checker = 'screen-dashboard-ck'; } }
+        function selectDay_Checker(element) { if (!element) return; document.querySelectorAll('#app-checker .calendar-day.selected').forEach(el => el.classList.remove('selected')); element.classList.add('selected'); }
+        function finishJob() { console.log('Simulating "Finish Job"'); showScreen_Checker('screen-dashboard-ck'); const fb = document.getElementById('feedback-popup-trigger'); if (fb) fb.classList.remove('hidden'); enableFeedbackNav(); }
 
         // --- App 3 (AD) Logic ---
         let currentScreen_AD = 'screen-dashboard-ad';
-        function showScreen_AD(screenId) {
-            document.querySelectorAll('#app-ad .app-screen').forEach(el => el.classList.add('hidden'));
-            const targetScreen = document.getElementById(screenId);
-            if(targetScreen){
-                targetScreen.classList.remove('hidden');
-                currentScreen_AD = screenId;
-            } else {
-                 console.error("AD screen not found:", screenId);
-                 document.getElementById('screen-dashboard-ad').classList.remove('hidden');
-                 currentScreen_AD = 'screen-dashboard-ad';
-            }
-        }
+        function showScreen_AD(screenId) { document.querySelectorAll('#app-ad .app-screen').forEach(el => el.classList.add('hidden')); const scr = document.getElementById(screenId); if(scr){ scr.classList.remove('hidden'); currentScreen_AD = screenId; } else { console.error("AD screen not found:", screenId); document.getElementById('screen-dashboard-ad').classList.remove('hidden'); currentScreen_AD = 'screen-dashboard-ad'; } }
 
-        // --- App 4 (Admin) Logic ---
-        let currentScreen_Admin = 'screen-dashboard-urgent';
+        // --- App 4 (Admin / Zone) Logic ---
+        // **** MODIFIED: Simplified showScreen_Admin for Mobile Only ****
+        let currentScreen_Admin = 'screen-dashboard-urgent'; // Default screen
         function showScreen_Admin(screenId) {
-            document.querySelectorAll('#app-admin .admin-screen').forEach(el => el.classList.add('hidden'));
-            const targetScreen = document.getElementById(screenId);
-            if(targetScreen){
-                 targetScreen.classList.remove('hidden');
-                document.querySelectorAll('#app-admin .sidebar-nav a').forEach(a => a.classList.remove('active'));
-                 const activeLink = document.querySelector(`#app-admin .sidebar-nav a[onclick="showScreen_Admin('${screenId}')"]`);
-                 if (activeLink) activeLink.classList.add('active');
-                 currentScreen_Admin = screenId;
-            } else {
-                console.error("Admin screen not found:", screenId);
-                document.getElementById('screen-dashboard-urgent').classList.remove('hidden');
-                const defaultLink = document.querySelector(`#app-admin .sidebar-nav a[onclick="showScreen_Admin('screen-dashboard-urgent')"]`);
-                if (defaultLink) defaultLink.classList.add('active');
-                currentScreen_Admin = 'screen-dashboard-urgent';
-            }
-        }
+             // Hide all admin screens within the app-container
+             document.querySelectorAll('#app-admin .app-screen').forEach(el => el.classList.add('hidden'));
+             const targetScreen = document.getElementById(screenId);
+
+             if(targetScreen){
+                 targetScreen.classList.remove('hidden'); // Show the target screen
+                 currentScreen_Admin = screenId; // Update state
+
+                 // Update active state for mobile bottom nav
+                 document.querySelectorAll('#app-admin .app-nav .nav-item').forEach(link => link.classList.remove('active'));
+                 const activeLinks = document.querySelectorAll(`#app-admin .app-nav .nav-item[onclick*="'${screenId}'"]`);
+                 activeLinks.forEach(link => { if(link) link.classList.add('active'); });
+
+             } else {
+                 console.error("Admin screen content not found:", screenId);
+                 // Fallback to default admin screen
+                 showScreen_Admin('screen-dashboard-urgent'); // Recursive call with default
+             }
+         }
+         // **** END MODIFIED ****
+
 
         // --- Initialize ---
         document.addEventListener('DOMContentLoaded', () => {
              try {
+                 // Set initial screen for each persona safely
                  showScreen_Customer('screen-dashboard');
                  showScreen_Checker('screen-dashboard-ck');
                  showScreen_AD('screen-dashboard-ad');
-                 showScreen_Admin('screen-dashboard-urgent');
+                 showScreen_Admin('screen-dashboard-urgent'); // Setup initial Admin screen
+
                  showAppView('app-customer'); // Show customer view first
-                 generateCalendar(2025, 9); // Generate calendar based on October 2025
+                 generateCalendar(2025, 9);
                  disableFeedbackNav();
-                  // Initial state: hide options
-                  document.getElementById('persona-options').classList.add('hidden');
-                  isPersonaSwitcherOpen = false;
+                 document.getElementById('persona-options').classList.add('hidden');
+                 isPersonaSwitcherOpen = false;
              } catch (error) { console.error("Initialization error:", error); }
         });
 
     </script>
 </body>
 </html>
+
