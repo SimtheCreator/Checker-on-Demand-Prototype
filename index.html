@@ -10,7 +10,7 @@
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #e5e7eb; }
 
-        /* SKL Color Palette (จาก SKL Color Guide.jpg) */
+        /* SKL Color Palette */
         :root {
             --skl-orange: rgb(245, 131, 60);
             --skl-green: rgb(128, 195, 66);
@@ -21,27 +21,42 @@
         .bg-skl-orange { background-color: var(--skl-orange); }
         .text-skl-orange { color: var(--skl-orange); }
         .border-skl-orange { border-color: var(--skl-orange); }
-
         .bg-skl-green { background-color: var(--skl-green); }
         .text-skl-green { color: var(--skl-green); }
         .border-skl-green { border-color: var(--skl-green); }
-
         .bg-skl-gray { background-color: var(--skl-gray); }
         .text-skl-gray { color: var(--skl-gray); }
         .border-skl-gray { border-color: var(--skl-gray); }
 
-        /* --- Persona Switcher (New UI) --- */
-        #persona-switcher {
+        /* --- MODIFIED: Persona Switcher (Collapsible, Top Right) --- */
+        #persona-switcher-container {
             position: fixed;
-            bottom: 1.5rem;
+            top: 1.5rem; /* Changed from bottom */
             right: 1.5rem;
             z-index: 1000;
             display: flex;
+            flex-direction: column; /* Keep column layout */
+            align-items: flex-end; /* Align items to the right */
+            gap: 0.75rem;
+        }
+        #persona-options {
+            display: flex;
             flex-direction: column;
             gap: 0.5rem;
+             /* Add transition for smooth hide/show */
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform-origin: top right; /* Changed from bottom right */
+             /* Place options below the toggle button */
+             order: 2; /* Make options appear after toggle button */
         }
-        #persona-switcher button {
-            background-color: #1f2937;
+         /* Add state for hidden options */
+        #persona-options.hidden {
+            opacity: 0;
+            transform: scale(0.95) translateY(-10px); /* Changed from translateY(10px) */
+            pointer-events: none; /* Prevent clicking hidden buttons */
+        }
+        #persona-options button {
+            background-color: #374151; /* Darker gray */
             color: white;
             border: none;
             border-radius: 0.5rem;
@@ -49,24 +64,45 @@
             font-weight: 600;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: background-color 0.2s;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            white-space: nowrap; /* Prevent wrapping */
         }
-        #persona-switcher button:hover {
-            background-color: #374151;
+        #persona-options button:hover {
+            background-color: #4b5563;
         }
-        #persona-switcher button.active {
+        #persona-options button.active {
             background-color: var(--skl-orange);
         }
+        #persona-toggle-btn {
+            background-color: #1f2937; /* Even darker gray */
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            order: 1; /* Make toggle button appear first */
+        }
+        #persona-toggle-btn:hover {
+            transform: scale(1.1);
+        }
+        /* --- END MODIFIED --- */
 
         /* --- Base App Styles (Mobile) --- */
         .app-container {
             max-width: 420px;
-            height: 95vh; /* Changed: 90vh -> 95vh (ยาวขึ้น) */
-            max-height: 900px; /* จำกัดความสูงสูงสุดสำหรับจอใหญ่ */
-            margin: auto; /* Changed: 2.5vh auto -> auto (จัดกลาง) */
+            height: 95vh;
+            max-height: 900px;
+            margin: auto;
             border-radius: 1.5rem;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             overflow: hidden;
@@ -75,84 +111,51 @@
             background: #f7fafc;
         }
         .app-header {
-            color: white;
-            padding: 1.5rem 1.25rem;
-            text-align: center;
-            font-size: 1.25rem;
-            font-weight: 600;
-            position: relative;
+            color: white; padding: 1.5rem 1.25rem; text-align: center;
+            font-size: 1.25rem; font-weight: 600; position: relative;
         }
         .app-header .back-btn {
-            position: absolute;
-            left: 1.25rem;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.25rem;
-            cursor: pointer;
+            position: absolute; left: 1.25rem; top: 50%; transform: translateY(-50%);
+            font-size: 1.25rem; cursor: pointer;
         }
         .app-content {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 1.5rem;
+            flex-grow: 1; overflow-y: auto; padding: 1.5rem;
             background-color: #f3f4f6;
         }
         .app-nav {
-            display: flex;
-            justify-content: space-around;
-            padding: 0.75rem 0;
-            border-top: 1px solid #e2e8f0;
-            background: white;
+            display: flex; justify-content: space-around; padding: 0.75rem 0;
+            border-top: 1px solid #e2e8f0; background: white;
         }
         .app-nav .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 0.75rem;
-            color: var(--skl-gray);
-            cursor: pointer;
-            flex: 1; /* Make items take equal space */
-            text-align: center; /* Center text */
+            display: flex; flex-direction: column; align-items: center;
+            font-size: 0.75rem; color: var(--skl-gray); cursor: pointer;
+            flex: 1; text-align: center;
         }
-         /* **** ADDED: Style for disabled nav item **** */
         .app-nav .nav-item.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            pointer-events: none; /* Prevent clicks */
+            opacity: 0.5; cursor: not-allowed; pointer-events: none;
         }
-        /* **** END ADDED **** */
         .app-nav .nav-item i { font-size: 1.25rem; margin-bottom: 0.25rem; }
 
         /* Button Base */
         .btn {
-            display: block;
-            width: 100%;
-            padding: 0.875rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: white;
+            display: block; width: 100%; padding: 0.875rem; border-radius: 0.5rem;
+            font-weight: 600; text-align: center; cursor: pointer;
+            transition: all 0.2s; color: white;
         }
         .btn-primary { background-color: var(--skl-green); }
         .btn-secondary { background-color: var(--skl-gray); }
         .btn-danger { background-color: #dc2626; }
         .btn-alert { background-color: var(--skl-orange); }
         .btn-outline {
-            border: 2px solid var(--skl-orange);
-            color: var(--skl-orange);
-            background: white;
+            border: 2px solid var(--skl-orange); color: var(--skl-orange); background: white;
         }
         .btn:disabled, .btn-disabled {
-            background-color: #cbd5e0;
-            cursor: not-allowed;
-            color: #718096;
+            background-color: #cbd5e0; cursor: not-allowed; color: #718096;
         }
 
         /* --- App 1 (Customer) Specific Styles --- */
         #app-customer .app-header { background-color: var(--skl-orange); }
         #app-customer .app-nav .nav-item.active { color: var(--skl-orange); }
-        /* Stepper CSS */
         .stepper { display: flex; flex-direction: column; }
         .step { display: flex; align-items: flex-start; position: relative; padding-bottom: 1.5rem; }
         .step:not(:last-child)::before { content: ''; position: absolute; left: 12px; top: 30px; bottom: 0; width: 2px; background: #e2e8f0; }
@@ -163,48 +166,31 @@
         .step-content { padding-top: 2px; }
         .step-title { font-weight: 600; color: #2d3748; }
         .step-desc { font-size: 0.875rem; color: #718096; }
-        /* Calendar */
         .calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; text-align: center; }
         .calendar-header { font-weight: 600; color: var(--skl-gray); font-size: 0.875rem; }
         .calendar-day { padding: 0.75rem 0; border-radius: 50%; cursor: pointer; transition: all 0.2s; }
-        .calendar-day.today { background: #e0f2fe; color: #0c4a6e; }
+        .calendar-day.today { background: #e0f2fe; color: #0c4a6e; font-weight: bold; border: 2px solid #0284c7; } /* Highlight today more */
         .calendar-day.selected { background: var(--skl-green); color: white; }
         .calendar-day:not(.disabled):hover { background: #e2e8f0; }
         .calendar-day.disabled { color: #cbd5e0; cursor: not-allowed; opacity: 0.6; }
-        /* New class for Request 2 */
         .calendar-day.full {
-            background-color: #ef4444; /* Red */
-            color: white;
-            opacity: 0.8;
-            cursor: pointer; /* Still clickable */
-            font-weight: 600;
+            background-color: #ef4444; color: white; opacity: 0.8;
+            cursor: pointer; font-weight: 600;
         }
-        .calendar-day.full:hover {
-            opacity: 1;
-        }
-        /* Time Slot */
+        .calendar-day.full:hover { opacity: 1; }
         .time-slot { padding: 1.25rem; border: 2px solid #e2e8f0; border-radius: 0.5rem; text-align: center; cursor: pointer; transition: all 0.2s; }
         .time-slot.selected { border-color: var(--skl-green); background: #f0fff4; }
         .time-slot.disabled { background: var(--skl-gray); border-color: var(--skl-gray); color: white; cursor: not-allowed; opacity: 0.7; }
         .time-slot i { font-size: 1.5rem; margin-bottom: 0.5rem; }
         .time-slot-title { font-weight: 600; }
-        /* Star Rating */
         .star-rating { display: flex; justify-content: center; gap: 0.5rem; }
         .star-rating i { font-size: 1.75rem; color: #cbd5e0; cursor: pointer; }
         .star-rating i.selected { color: #facc15; }
-
-        /* New class for notification card */
         .notification-card {
-            background-color: var(--skl-orange);
-            border-left: 4px solid #c2410c; /* Darker orange */
-            color: white;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 1.5rem;
+            background-color: var(--skl-orange); border-left: 4px solid #c2410c;
+            color: white; padding: 1rem; border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 1.5rem;
         }
-
-         /* **** ADDED: Modal styles **** */
         .modal-overlay {
             position: fixed; inset: 0; background-color: rgba(0,0,0,0.6);
             display: flex; align-items: center; justify-content: center;
@@ -215,30 +201,22 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             max-width: 400px; width: 100%; text-align: center;
         }
-        /* **** END ADDED **** */
-
 
         /* --- App 2 (Checker) Specific Styles --- */
         #app-checker .app-header { background-color: var(--skl-green); }
         #app-checker .app-nav .nav-item.active { color: var(--skl-green); }
-        /* Job Card */
         .job-card { background: white; padding: 1rem; border-radius: 0.5rem; border-left: 5px solid var(--skl-orange); box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 0.75rem; cursor: pointer; }
         .job-card-time { font-size: 0.875rem; font-weight: 600; color: #6b7280; }
         .job-card-customer { font-size: 1.125rem; font-weight: 600; color: #111827; }
-        /* **** ADDED: KPI Time Style **** */
         .kpi-time { font-size: 0.8rem; font-weight: 500; color: #dc2626; margin-top: 0.25rem; }
-        /* **** END ADDED **** */
-        /* Calendar */
         #app-checker .calendar-day.selected { background: #fee2e2; border: 2px solid #dc2626; }
 
         /* --- App 3 (AD) Specific Styles --- */
         #app-ad .app-header { background-color: var(--skl-gray); }
-        #app-ad .app-nav .nav-item.active { color: var(--skl-green); } /* AD uses Green as accent */
-        /* Customer Card */
+        #app-ad .app-nav .nav-item.active { color: var(--skl-green); }
         .customer-card { background: white; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 0.75rem; cursor: pointer; }
         .customer-name { font-size: 1.125rem; font-weight: 600; color: #111827; }
         .customer-status { font-size: 0.875rem; font-weight: 500; }
-        /* Stepper (Horizontal Mini, 5 steps for AD) */
         .mini-stepper { display: flex; justify-content: space-between; align-items: flex-start; padding: 0.5rem 0; }
         .mini-step { display: flex; flex-direction: column; align-items: center; position: relative; flex-grow: 1; width: 20%; }
         .mini-step:not(:last-child)::after { content: ''; position: absolute; top: 10px; left: 50%; right: -50%; height: 2px; background: #e5e7eb; z-index: 1; }
@@ -250,16 +228,7 @@
         .mini-step.active .mini-step-label { color: #111827; font-weight: 600; }
 
         /* --- App 4 (Admin) Specific Styles --- */
-        .panel-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            display: flex;
-            min-height: 90vh;
-            background: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
+        .panel-container { max-width: 1200px; margin: 2rem auto; display: flex; min-height: 90vh; background: white; border-radius: 0.75rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); overflow: hidden; }
         .sidebar { width: 250px; background: #1f2937; color: white; padding: 1.5rem; display: flex; flex-direction: column; }
         .sidebar-header { font-size: 1.5rem; font-weight: 700; margin-bottom: 2rem; text-align: center; color: var(--skl-orange); }
         .sidebar-nav a { display: flex; align-items: center; padding: 0.875rem 1rem; border-radius: 0.5rem; color: #d1d5db; font-weight: 500; text-decoration: none; transition: all 0.2s; margin-bottom: 0.5rem; }
@@ -269,32 +238,14 @@
         .main-content { flex-grow: 1; display: flex; flex-direction: column; }
         .main-header { padding: 1.5rem 2rem; border-bottom: 1px solid #e5e7eb; font-size: 1.75rem; font-weight: 700; color: #111827; }
         .main-area { flex-grow: 1; padding: 2rem; overflow-y: auto; }
-        /* Table Style */
         .data-table { width: 100%; border-collapse: collapse; }
         .data-table th, .data-table td { padding: 0.875rem 1.25rem; border-bottom: 1px solid #e5e7eb; text-align: left; }
         .data-table th { background: #f9fafb; font-weight: 600; color: #4b5563; }
         .data-table tbody tr:hover { background: #f9fafb; }
-        /* Urgent Card */
         .urgent-card { background: #fffbeb; border-left: 5px solid var(--skl-orange); padding: 1.25rem; border-radius: 0.5rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
-        /* New Notification Style */
-        .notification-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            padding: 1rem;
-            border-bottom: 1px solid #e5e7eb;
-        }
+        .notification-item { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; border-bottom: 1px solid #e5e7eb; }
         .notification-item:hover { background: #f9fafb; }
-        .notification-icon {
-            font-size: 1.25rem;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
+        .notification-icon { font-size: 1.25rem; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .notification-icon.high { background: #fef2f2; color: #dc2626; }
         .notification-icon.medium { background: #fffbeb; color: #d97706; }
         .notification-icon.low { background: #f0f9ff; color: #2563eb; }
@@ -305,13 +256,22 @@
 </head>
 <body>
 
-    <!-- ======== PERSONA SWITCHER (NEW) ======== -->
-    <div id="persona-switcher">
-        <button id="btn-view-customer" class="active" onclick="showAppView('app-customer')"><i class="fas fa-user"></i> Customer - SKL Mobile</button>
-        <button id="btn-view-checker" onclick="showAppView('app-checker')"><i class="fas fa-motorcycle"></i> Checker - Mobility</button>
-        <button id="btn-view-ad" onclick="showAppView('app-ad')"><i class="fas fa-user-tie"></i> AD - Smart App</button>
-        <button id="btn-view-admin" onclick="showAppView('app-admin')"><i class="fas fa-user-shield"></i> Zone - HPLS</button>
+    <!-- ======== MODIFIED: Persona Switcher ======== -->
+    <div id="persona-switcher-container">
+        <!-- This is the main toggle button -->
+        <button id="persona-toggle-btn" onclick="togglePersonaSwitcher()">
+            <i class="fas fa-users"></i>
+        </button>
+        <!-- These options will be hidden by default and appear below the button -->
+        <div id="persona-options" class="hidden">
+            <button id="btn-view-customer" onclick="showAppView('app-customer')"><i class="fas fa-user"></i> Customer - SKL Mobile</button>
+            <button id="btn-view-checker" onclick="showAppView('app-checker')"><i class="fas fa-motorcycle"></i> Checker - Mobility</button>
+            <button id="btn-view-ad" onclick="showAppView('app-ad')"><i class="fas fa-user-tie"></i> AD - Smart App</button>
+            <button id="btn-view-admin" onclick="showAppView('app-admin')"><i class="fas fa-user-shield"></i> Zone - HPLS</button>
+        </div>
     </div>
+    <!-- ======== END MODIFIED ======== -->
+
 
     <!-- ======== APP 1: CUSTOMER (SKL Mobile App) ======== -->
     <div id="app-customer" class="app-wrapper">
@@ -430,7 +390,7 @@
                     <!-- 4. Detailed Address Text Area (Auto-filled) -->
                     <div>
                         <label for="detailed-address" class="text-sm font-medium text-skl-gray">ที่อยู่ (จากข้อมูลกลาง)</label>
-                        <textarea id="detailed-address" class="w-full p-3 border rounded-lg mt-1 bg-gray-100" rows="3" placeholder="กำลังโหลดที่อยู่..." readonly></textarea>
+                        <textarea id="detailed-address" class="w-full p-3 border rounded-lg mt-1 bg-gray-100" rows="3" placeholder="กำลังโหลดที่อยู่..."></textarea>
                         <p class="text-xs text-skl-gray mt-1">กรุณากดปักหมุดบนแผนที่เพื่อยืนยัน/แก้ไขตำแหน่ง</p>
                     </div>
                      <!-- 5. Next Button -->
@@ -488,7 +448,7 @@
                     <div class="bg-white p-5 rounded-lg shadow mb-6">
                         <h2 class="text-lg font-semibold text-gray-800 mb-4">นัดหมายของฉัน</h2>
                         <p class="text-sm text-skl-gray mb-1">สถานะ: <span class="font-medium text-skl-orange">1 วันก่อนวันนัด</span></p>
-                        <p class="text-sm text-skl-gray mb-4">นัดหมายวันที่: 25 ต.ค. 2025 (วันนี้: 24 ต.ค. 2025)</p>
+                        <p class="text-sm text-skl-gray mb-4">นัดหมายวันที่: 25 ต.ค. 2025 (วันนี้: 28 ต.ค. 2025)</p> <!-- Updated today's date here for context -->
 
                         <button class="btn btn-primary" onclick="showScreen_Customer('screen-schedule-calendar')">เลื่อน Slot (Reschedule)</button>
 
@@ -583,7 +543,6 @@
                     <span><i class="fas fa-list-check mr-2"></i> งานวันนี้ (2 งาน)</span>
                 </div>
                 <div class="app-content">
-                     <!-- **** MODIFIED: Added KPI Time to Job Card **** -->
                     <div class="job-card" onclick="showScreen_Checker('screen-job-detail')">
                         <div class="job-card-time">09:00 - 12:00 (ช่วงเช้า)</div>
                         <div class="job-card-customer">คุณสมหญิง ใจดี</div>
@@ -594,7 +553,6 @@
                         <div class="job-card-customer">คุณวิรัช มุ่งมั่น</div>
                         <div class="kpi-time"><i class="fas fa-clock mr-1"></i> KPI: 12:00 (พรุ่งนี้)</div>
                     </div>
-                     <!-- **** END MODIFIED **** -->
                 </div>
                 <nav class="app-nav">
                     <div class="nav-item active" onclick="showScreen_Checker('screen-dashboard-ck')"><i class="fas fa-list-check"></i>งานวันนี้</div>
@@ -610,14 +568,12 @@
                     <span>รายละเอียดงาน</span>
                 </div>
                 <div class="app-content">
-                     <!-- **** MODIFIED: Added KPI Time to Job Detail **** -->
                     <div class="bg-white p-5 rounded-lg shadow space-y-4">
                         <div><label class="text-sm font-medium text-skl-gray">ลูกค้า</label><p class="text-lg font-semibold text-gray-800">คุณสมหญิง ใจดี</p></div>
                         <div><label class="text-sm font-medium text-skl-gray">เวลา</label><p class="text-lg font-semibold text-gray-800">09:00 - 12:00</p></div>
                         <div><label class="text-sm font-medium text-skl-gray">KPI</label><p class="text-lg font-semibold text-red-600">17:00 (วันนี้)</p></div>
                         <button class="btn btn-primary"><i class="fas fa-map-location-dot mr-2"></i>ดูแผนที่เส้นทาง</button>
                     </div>
-                     <!-- **** END MODIFIED **** -->
                     <div class="mt-6 space-y-3">
                         <button class="btn btn-secondary" onclick="showScreen_Checker('screen-record-note')"><i class="fas fa-microphone mr-2"></i>บันทึกข้อมูล (เสียง/ข้อความ)</button>
                         <button class="btn btn-primary !bg-blue-600"><i class="fas fa-check-double mr-2"></i>เตรียมพร้อม (รับงานถัดไป)</button>
@@ -669,18 +625,18 @@
                         <p class="text-sm text-skl-gray mb-4">เลือกวันที่ต้องการ "ปิด Slot"</p>
                         <div class="calendar">
                             <div class="calendar-header">อา</div><div class="calendar-header">จ</div><div class="calendar-header">อ</div><div class="calendar-header">พ</div><div class="calendar-header">พฤ</div><div class="calendar-header">ศ</div><div class="calendar-header">ส</div>
-                            <div class="calendar-day disabled">...</div>
-                            <div class="calendar-day" onclick="selectDay_Checker(this)">13</div>
-                            <div class="calendar-day today" onclick="selectDay_Checker(this)">14</div>
-                            <div class="calendar-day" onclick="selectDay_Checker(this)">15</div>
-                            <div class="calendar-day" onclick="selectDay_Checker(this)">16</div>
-                            <div class="calendar-day" onclick="selectDay_Checker(this)">17</div>
-                            <div class="calendar-day" onclick="selectDay_Checker(this)">18</div>
-                            <div class="calendar-day" onclick="selectDay_Checker(this)">19</div>
+                            <div class="calendar-day disabled">...</div><div class="calendar-day disabled">...</div><div class="calendar-day disabled">...</div>
+                            <div class="calendar-day" onclick="selectDay_Checker(this)">26</div>
+                            <div class="calendar-day" onclick="selectDay_Checker(this)">27</div>
+                            <div class="calendar-day today" onclick="selectDay_Checker(this)">28</div>
+                            <div class="calendar-day" onclick="selectDay_Checker(this)">29</div>
+                            <div class="calendar-day full" onclick="selectDay_Checker(this)">30</div> <!-- Assuming 30th is still full -->
+                            <div class="calendar-day" onclick="selectDay_Checker(this)">31</div>
+                             <!-- Placeholder for next month start -->
                         </div>
                     </div>
                     <div class="mt-6 bg-white p-5 rounded-lg shadow">
-                        <h3 class="font-semibold mb-3">วันที่เลือก: 17 ตุลาคม 2025</h3>
+                        <h3 class="font-semibold mb-3">วันที่เลือก: 29 ตุลาคม 2025</h3> <!-- Example selected date -->
                         <div class="flex gap-4">
                             <button class="btn btn-danger flex-1">ปิด (ทั้งวัน)</button>
                             <button class="btn btn-danger flex-1">ปิด (เช้า)</button>
@@ -919,19 +875,19 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>27 ต.ค. 2025</td>
+                                    <td>29 ต.ค. 2025</td> <!-- Updated example date -->
                                     <td>ช่วงเช้า (9:00 - 12:00 น.)</td>
                                     <td>คุณมานพ พัฒนา</td>
                                     <td><span class="text-blue-600 font-medium">รอการจ่ายงาน</span></td>
                                 </tr>
                                 <tr>
-                                    <td>27 ต.ค. 2025</td>
+                                    <td>29 ต.ค. 2025</td> <!-- Updated example date -->
                                     <td>ช่วงบ่าย (13:00 - 17:00 น.)</td>
                                     <td>คุณอารี ใจดี</td>
                                     <td><span class="text-blue-600 font-medium">รอการจ่ายงาน</span></td>
                                 </tr>
                                 <tr>
-                                    <td>28 ต.ค. 2025</td>
+                                    <td>31 ต.ค. 2025</td> <!-- Updated example date -->
                                     <td>ช่วงเช้า (9:00 - 12:00 น.)</td>
                                     <td>คุณสมศักดิ์ ขยัน</td>
                                     <td><span class="text-blue-600 font-medium">รอการจ่ายงาน</span></td>
@@ -963,121 +919,114 @@
              }
          }
 
+        // --- MODIFIED: Persona Switcher Logic ---
+        let isPersonaSwitcherOpen = false;
 
-        // --- Master View Switcher ---
+        function togglePersonaSwitcher() {
+            const options = document.getElementById('persona-options');
+            const toggleBtn = document.getElementById('persona-toggle-btn');
+            isPersonaSwitcherOpen = !isPersonaSwitcherOpen;
+
+            if (isPersonaSwitcherOpen) {
+                options.classList.remove('hidden');
+                // Optional: Change icon to 'close'
+                toggleBtn.innerHTML = '<i class="fas fa-times"></i>';
+            } else {
+                options.classList.add('hidden');
+                 // Optional: Change icon back to 'users'
+                toggleBtn.innerHTML = '<i class="fas fa-users"></i>';
+            }
+        }
+
+        // --- Master View Switcher (Modified to hide switcher on selection) ---
         function showAppView(appId) {
             // Hide all app wrappers
             document.querySelectorAll('.app-wrapper').forEach(el => el.classList.add('hidden'));
             // Show the target app wrapper
-            document.getElementById(appId).classList.remove('hidden');
+            const targetApp = document.getElementById(appId);
+             if (targetApp) {
+                 targetApp.classList.remove('hidden');
+             } else {
+                 console.error("Target app wrapper not found:", appId);
+                 document.getElementById('app-customer').classList.remove('hidden'); // Fallback
+                 appId = 'app-customer'; // Correct appId for button state
+             }
+
 
             // Update active button state
-            document.querySelectorAll('#persona-switcher button').forEach(btn => btn.classList.remove('active'));
-            document.getElementById('btn-view-' + appId.split('-')[1]).classList.add('active');
+            document.querySelectorAll('#persona-options button').forEach(btn => btn.classList.remove('active'));
+             const activeButton = document.getElementById('btn-view-' + appId.split('-')[1]);
+             if (activeButton) activeButton.classList.add('active');
+
+            // Automatically hide the options after selection
+            isPersonaSwitcherOpen = false; // Reset state
+             // Safely hide options and reset button icon
+             const optionsDiv = document.getElementById('persona-options');
+             const toggleBtn = document.getElementById('persona-toggle-btn');
+             if (optionsDiv) optionsDiv.classList.add('hidden');
+             if (toggleBtn) toggleBtn.innerHTML = '<i class="fas fa-users"></i>';
         }
+        // --- END MODIFIED ---
+
 
         // --- App 1 (Customer) Logic ---
         let currentScreen_Customer = 'screen-dashboard';
         let selectedDate = null;
         let selectedTimeSlot = null; // New variable
         let detailedAddress = ""; // New variable for address
-        // Request 3: Hardcode today's date for demo consistency
-        // (Current time: Friday, October 24, 2025 at 12:43 PM)
-        const today = new Date(2025, 9, 24, 12, 43, 0); // Oct 24, 2025, 12:43 PM
-         // **** ADDED: Simulated central address ****
-         const centralCustomerAddress = "123 หมู่บ้านตัวอย่าง ถ. สุขุมวิท แขวงคลองเตย เขตคลองเตย กรุงเทพมหานคร 10110";
-         // **** END ADDED ****
+         // **** UPDATED: Today's date for presentation ****
+        const today = new Date(2025, 9, 28, 10, 0, 0); // Oct 28, 2025, 10:00 AM
+         // **** END UPDATED ****
+        const centralCustomerAddress = "123 หมู่บ้านตัวอย่าง ถ. สุขุมวิท แขวงคลองเตย เขตคลองเตย กรุงเทพมหานคร 10110";
 
         function showScreen_Customer(screenId) {
-            // Handle popup display logic
-            // **** MODIFIED: Use new modal functions ****
-            // const urgentPopup = document.getElementById('screen-urgent-popup');
-            // if (screenId === 'screen-urgent-popup') {
-            //      if(urgentPopup) urgentPopup.classList.remove('hidden');
-            //     return; // Don't hide other screens when showing popup
-            // } else {
-            //      if(urgentPopup) urgentPopup.classList.add('hidden'); // Hide popup if navigating away
-            // }
-            // **** END MODIFIED ****
-
-             // Hide active state from nav items first
              document.querySelectorAll('#app-customer .app-nav .nav-item').forEach(item => item.classList.remove('active'));
+             document.querySelectorAll('#app-customer .app-screen').forEach(el => el.classList.add('hidden'));
 
-
-            // Hide all main screens in this app
-            document.querySelectorAll('#app-customer .app-screen').forEach(el => el.classList.add('hidden'));
-
-            // Show target screen
             const targetScreen = document.getElementById(screenId);
             if (targetScreen) {
                  targetScreen.classList.remove('hidden');
                  currentScreen_Customer = screenId;
-
-                 // Set active nav item based on the screen shown
-                 let activeNavId = '';
-                 if (screenId === 'screen-dashboard') activeNavId = 'nav-home-customer'; // Assuming you add this ID or similar logic
-                 else if (screenId === 'screen-my-appointment') activeNavId = 'nav-appointment-customer'; // Assuming ID
-                 else if (screenId === 'screen-feedback-form') activeNavId = 'nav-feedback-customer'; // Use the ID added below
-                 else if (screenId === 'screen-profile') activeNavId = 'nav-profile-customer'; // Assuming ID
-
-                 // Find the corresponding nav item(s) and add 'active' class
-                 // Since feedback nav exists in multiple places, select all potential ones
                  const activeNavItems = document.querySelectorAll(`#app-customer .app-nav .nav-item[onclick*="'${screenId}'"]`);
                  activeNavItems.forEach(navItem => {
                      if (navItem) navItem.classList.add('active');
                  });
-
-
             } else {
                  console.error("Target screen not found:", screenId);
-                 // Optionally show a default screen like dashboard
                  document.getElementById('screen-dashboard').classList.remove('hidden');
                  currentScreen_Customer = 'screen-dashboard';
-                 // Activate home nav item
                  const homeNav = document.querySelector('#app-customer .app-nav .nav-item[onclick*="screen-dashboard"]');
                  if(homeNav) homeNav.classList.add('active');
-                 return; // Exit if target screen is invalid
+                 return;
             }
 
-            // **** ADDED: Auto-fill address on map screen ****
             if (screenId === 'screen-schedule-map') {
                 const addressInput = document.getElementById('detailed-address');
                 if (addressInput) {
-                    addressInput.value = centralCustomerAddress; // Set value from "central data"
-                    // Optionally make it readonly initially, until user clicks map or search?
-                    // addressInput.readOnly = true;
+                    addressInput.value = centralCustomerAddress;
                 }
             }
-             // **** END ADDED ****
 
-
-            // Request 3b: Logic for today's time slots
+            // **** MODIFIED: Time slot logic for Oct 28 ****
             if (screenId === 'screen-schedule-time') {
                 const slotAm = document.getElementById('slot-am');
                 const slotPm = document.getElementById('slot-pm');
-
-                // Reset slots first
                 if (slotAm) slotAm.classList.remove('disabled', 'selected');
                 if (slotPm) slotPm.classList.remove('disabled', 'selected');
-
-                // Check if the selected date is today
-                // **** MODIFIED: Added explicit check for hour >= 12 ****
-                if (selectedDate && selectedDate.toDateString() === today.toDateString() && today.getHours() >= 12) {
-                    // It's today (Oct 24) AND it's 12 PM or later, disable morning slot
+                 // Check if the selected date is today (Oct 28)
+                if (selectedDate && selectedDate.toDateString() === today.toDateString()) {
+                     // Disable morning slot regardless of the current time for Oct 28
                     if (slotAm) slotAm.classList.add('disabled');
                 }
-                // **** END MODIFIED ****
-                // (Future dates will have both slots enabled)
+                 // For other dates, both slots are enabled by default (unless full in a real app)
             }
+             // **** END MODIFIED ****
 
-            // New: Update Summary Screen dynamically
             if (screenId === 'screen-schedule-summary') {
                  const summaryDateEl = document.getElementById('summary-date');
                  const summaryTimeEl = document.getElementById('summary-time');
                  const summaryAddressEl = document.getElementById('summary-address');
-
                 if (selectedDate && summaryDateEl) {
-                    // Format date using Thai locale options
                      summaryDateEl.innerText = selectedDate.toLocaleDateString('th-TH', { dateStyle: 'long' });
                 }
                 if (selectedTimeSlot && summaryTimeEl) {
@@ -1085,25 +1034,17 @@
                 } else if (summaryTimeEl) {
                      summaryTimeEl.innerText = "ยังไม่ได้เลือกเวลา";
                 }
-                 // **** ADDED: Update address display ****
                  if (summaryAddressEl) {
-                      // Use the 'detailedAddress' variable which is updated when leaving map screen
                      summaryAddressEl.innerText = detailedAddress || "ยังไม่ได้กรอก";
                  }
-                 // **** END ADDED ****
             }
         }
 
-        // Renamed from navigateToTimeOrUrgent
         function navigateToTimeSelection() {
             if (selectedDate) {
-                // A valid, available date is selected
                 showScreen_Customer('screen-schedule-time');
             } else {
-                // No date selected
-                // Use custom modal or inline message instead of alert()
                 console.warn('กรุณาเลือกวันที่ที่ว่างก่อนครับ');
-                // Example: Display an inline message
                 const calendarElement = document.getElementById('customer-calendar-grid');
                 if(calendarElement){
                     let errorMsg = calendarElement.parentElement.querySelector('.error-message');
@@ -1114,15 +1055,11 @@
                     }
                     errorMsg.innerText = 'กรุณาเลือกวันที่ที่ว่างก่อนครับ';
                 }
-                // alert('กรุณาเลือกวันที่ที่ว่างก่อนครับ'); // Avoid using alert
             }
         }
 
         function selectDate(element) {
-            // This function is only for available days
             if (!element || element.classList.contains('disabled') || element.classList.contains('full')) {
-                 // If it's a full day, let the specific handler manage it.
-                 // If disabled, do nothing.
                 return;
             }
             document.querySelectorAll('#app-customer .calendar-day.selected').forEach(el => el.classList.remove('selected'));
@@ -1130,13 +1067,12 @@
 
             const day = parseInt(element.innerText);
             if (!isNaN(day)) {
-                 selectedDate = new Date(2025, 9, day); // Oct 2025
-
+                 selectedDate = new Date(2025, 9, day);
                  const selectedDateTextEl = document.getElementById('selected-date-text');
                  if (selectedDateTextEl) {
-                      selectedDateTextEl.innerText = `วันที่เลือก: ${day} ตุลาคม 2025`;
+                      // Display the newly selected date
+                      selectedDateTextEl.innerText = `วันที่เลือก: ${selectedDate.toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' })}`;
                  }
-                 // Clear previous error message if any
                  const calendarElement = document.getElementById('customer-calendar-grid');
                  if(calendarElement){
                      const errorMsg = calendarElement.parentElement.querySelector('.error-message');
@@ -1149,46 +1085,31 @@
         }
 
 
-        // New: Add missing selectTime function
         function selectTime(element, timeString) {
             if (!element || element.classList.contains('disabled')) {
                 return;
             }
-            // Remove selected class from all time slots
             document.querySelectorAll('#app-customer .time-slot').forEach(el => el.classList.remove('selected'));
-            // Add selected class to the clicked one
             element.classList.add('selected');
-            // Store the value
             selectedTimeSlot = timeString;
         }
 
-        // **** MODIFIED: handleFullDayClick to show warning modal ****
         function handleFullDayClick() {
-             showModal('full-day-warning-modal'); // Show warning first
-             // Don't select the date or store it
+             showModal('full-day-warning-modal');
              selectedDate = null;
              document.querySelectorAll('#app-customer .calendar-day.selected').forEach(el => el.classList.remove('selected'));
         }
-        // **** END MODIFIED ****
 
-        // **** ADDED: Function to proceed to urgent request from warning ****
         function showUrgentRequestFromWarning() {
             hideModal('full-day-warning-modal');
-            showModal('screen-urgent-popup'); // Now show the original urgent request form
+            showModal('screen-urgent-popup');
         }
-        // **** END ADDED ****
 
-
-        // Request 3: New function to generate calendar dynamically
         function generateCalendar(year, month) {
             const calendarGrid = document.getElementById('customer-calendar-grid');
-            if (!calendarGrid) {
-                console.error("Calendar grid element not found");
-                return;
-            }
-            calendarGrid.innerHTML = ''; // Clear old one
+            if (!calendarGrid) { console.error("Calendar grid element not found"); return; }
+            calendarGrid.innerHTML = '';
 
-            // Add headers
             const headers = ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'];
             headers.forEach(header => {
                 const headerEl = document.createElement('div');
@@ -1197,66 +1118,45 @@
                 calendarGrid.appendChild(headerEl);
             });
 
-            const firstDayOfMonth = new Date(year, month, 1).getDay(); // 0=Sun, 1=Mon...
-            const daysInMonth = new Date(year, month + 1, 0).getDate(); // Get last day of month
+            const firstDayOfMonth = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-            // Add padding for first day
             for (let i = 0; i < firstDayOfMonth; i++) {
                 const padEl = document.createElement('div');
-                padEl.className = 'calendar-day disabled'; // Padding cells are always disabled
+                padEl.className = 'calendar-day disabled';
                 calendarGrid.appendChild(padEl);
             }
 
+            // Get today's date without time for comparison
+            const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
-            // Add days
             for (let day = 1; day <= daysInMonth; day++) {
                 const dayEl = document.createElement('div');
                 dayEl.innerText = day;
-
                 const currentDate = new Date(year, month, day);
                 const dayOfWeek = currentDate.getDay();
+                let classes = ['calendar-day'];
+                let onclickFunc = () => selectDate(dayEl);
 
-                let classes = ['calendar-day']; // Start with base class
-                let onclickFunc = () => selectDate(dayEl); // Use function reference
-
-                // Compare dates by ignoring time
-                const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
-                // Rule 3a: Past days (Req 1)
-                if (currentDate < todayDateOnly) {
-                    classes.push('disabled');
-                    onclickFunc = null; // No click
+                // Disable past dates (before Oct 28) and Sundays
+                if (currentDate < todayDateOnly || dayOfWeek === 0) {
+                    classes.push('disabled'); onclickFunc = null;
                 }
-                // Rule 3c: Sunday (Holiday) (Req 1)
-                else if (dayOfWeek === 0) {
-                    classes.push('disabled');
-                    onclickFunc = null; // No click
-                }
-                 // **** ADDED: Explicitly handle Saturday (dayOfWeek === 6) - Ensure it's NOT disabled (Req 1) ****
-                 // Although default behavior makes it clickable, adding this comment for clarity
-                 // else if (dayOfWeek === 6) { /* Saturday - Available by default */ }
-                // **** END ADDED ****
-                // Rule: Today
+                // Highlight today (Oct 28)
                 else if (currentDate.getTime() === todayDateOnly.getTime()) {
                     classes.push('today');
-                    // Onclick remains selectDate(this)
                 }
-                // Rule 2: Mock Full Day (Req 2)
-                // Let's make Sat, Oct 25 and Thu, Oct 30 full
-                else if (day === 25 || day === 30) {
-                    classes.push('full');
-                    onclickFunc = handleFullDayClick; // Use function reference (Req 2) - Now calls the modified function
+                // Keep Oct 30 as the 'full' day example
+                else if (day === 30) { // Removed day 25, keep 30 as example
+                    classes.push('full'); onclickFunc = handleFullDayClick;
                 }
+                // Saturdays (dayOfWeek === 6) are clickable by default
 
-                dayEl.className = classes.join(' '); // Assign classes
-                if (onclickFunc) {
-                    dayEl.onclick = onclickFunc; // Assign onclick function
-                }
-
+                dayEl.className = classes.join(' ');
+                if (onclickFunc) { dayEl.onclick = onclickFunc; }
                 calendarGrid.appendChild(dayEl);
             }
         }
-
 
         function rateStar(element, rating) {
              if (!element) return;
@@ -1264,15 +1164,13 @@
              if (!parent) return;
             const stars = parent.querySelectorAll('i');
             stars.forEach((star, index) => {
-                 if (star) { // Check if star element exists
-                     star.className = index < rating ? 'fas fa-star selected' : 'far fa-star';
-                 }
+                 if (star) { star.className = index < rating ? 'fas fa-star selected' : 'far fa-star'; }
             });
-             parent.dataset.rating = rating; // Store rating on parent
+             parent.dataset.rating = rating;
         }
 
         function submitUrgentRequest() {
-            hideModal('screen-urgent-popup'); // Hide the modal after submission
+            hideModal('screen-urgent-popup');
             showScreen_Customer('screen-dashboard');
             const feedbackTrigger = document.getElementById('feedback-popup-trigger');
             if(feedbackTrigger){
@@ -1287,36 +1185,24 @@
             if(feedbackTrigger){
                 feedbackTrigger.innerHTML = "<p class='font-bold'>ขอบคุณสำหรับคะแนน</p>";
                 feedbackTrigger.className = "bg-skl-green border-l-4 border-green-700 text-white p-4 rounded-lg shadow mb-6";
-                feedbackTrigger.classList.remove('hidden'); // Keep showing the thank you message
+                feedbackTrigger.classList.remove('hidden');
             }
-             // **** ADDED: Disable feedback nav item after submitting ****
              disableFeedbackNav();
-             // **** END ADDED ****
         }
         function updateChecklist(value) {
-            // Helper function to hide/show elements safely
             const hide = (id) => { const el = document.getElementById(id); if (el) el.classList.add('hidden'); };
             const show = (id) => { const el = document.getElementById(id); if (el) el.classList.remove('hidden'); };
-
-            hide('checklist-bkk');
-            hide('checklist-kaset');
-            hide('checklist-rao');
+            hide('checklist-bkk'); hide('checklist-kaset'); hide('checklist-rao');
             show('checklist-' + value);
         }
 
-        // **** MODIFIED: goToSummary to read address from textarea ****
         function goToSummary() {
             const addressInput = document.getElementById('detailed-address');
             if (addressInput) {
-                 // Update the global variable with the current value in the textarea
-                 // This allows the user to potentially edit the auto-filled address
                 detailedAddress = addressInput.value.trim();
-
                 if (!detailedAddress) {
-                    // Use console or inline message instead of alert
                     console.warn('กรุณากรอกหรือยืนยันที่อยู่');
-                    addressInput.focus(); // Focus the input field
-                    // Example: Show inline error
+                    addressInput.focus();
                     let errorMsg = addressInput.parentElement.querySelector('.error-message');
                     if (!errorMsg) {
                         errorMsg = document.createElement('p');
@@ -1324,39 +1210,25 @@
                         addressInput.insertAdjacentElement('afterend', errorMsg);
                     }
                     errorMsg.innerText = 'กรุณากรอกหรือยืนยันที่อยู่';
-                    // alert('กรุณากรอกหรือยืนยันที่อยู่'); // Avoid alert
                     return;
                 }
-                 // Clear error if address is provided
                  let errorMsg = addressInput.parentElement.querySelector('.error-message');
                  if (errorMsg) errorMsg.innerText = '';
-
                 showScreen_Customer('screen-schedule-summary');
-            } else {
-                 console.error("Detailed address input not found");
-            }
+            } else { console.error("Detailed address input not found"); }
         }
-        // **** END MODIFIED ****
 
-        // **** ADDED: Functions to enable/disable feedback nav ****
         function enableFeedbackNav() {
             const navItems = document.querySelectorAll('#nav-feedback-customer, #nav-feedback-customer-alt, #nav-feedback-customer-alt2');
-            navItems.forEach(item => {
-                 if (item) item.classList.remove('disabled');
-            });
+            navItems.forEach(item => { if (item) item.classList.remove('disabled'); });
         }
         function disableFeedbackNav() {
             const navItems = document.querySelectorAll('#nav-feedback-customer, #nav-feedback-customer-alt, #nav-feedback-customer-alt2');
-            navItems.forEach(item => {
-                 if (item) item.classList.add('disabled');
-            });
+            navItems.forEach(item => { if (item) item.classList.add('disabled'); });
         }
-        // **** END ADDED ****
-
 
         // --- App 2 (Checker) Logic ---
         let currentScreen_Checker = 'screen-dashboard-ck';
-
         function showScreen_Checker(screenId) {
             document.querySelectorAll('#app-checker .app-screen').forEach(el => el.classList.add('hidden'));
             const targetScreen = document.getElementById(screenId);
@@ -1369,33 +1241,21 @@
                  currentScreen_Checker = 'screen-dashboard-ck';
             }
         }
-
         function selectDay_Checker(element) {
              if (!element) return;
             document.querySelectorAll('#app-checker .calendar-day.selected').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
         }
-
-        // **** MODIFIED: finishJob to enable feedback nav ****
         function finishJob() {
-            // Use console or custom modal instead of alert
             console.log('จำลองการ "จบภารกิจ" - (Trigger Popup ใน SKL App ของลูกค้า)');
-            // alert('จำลองการ "จบภารกิจ" (P.14)\n(Trigger Popup ใน SKL App ของลูกค้า)'); // Avoid alert
             showScreen_Checker('screen-dashboard-ck');
-            // This is where you would trigger the push notification.
-            // For this demo, we'll manually show the customer's feedback popup if they switch views.
             const feedbackTrigger = document.getElementById('feedback-popup-trigger');
             if (feedbackTrigger) feedbackTrigger.classList.remove('hidden');
-
-             // Enable the feedback navigation item for the customer
              enableFeedbackNav();
         }
-        // **** END MODIFIED ****
-
 
         // --- App 3 (AD) Logic ---
         let currentScreen_AD = 'screen-dashboard-ad';
-
         function showScreen_AD(screenId) {
             document.querySelectorAll('#app-ad .app-screen').forEach(el => el.classList.add('hidden'));
             const targetScreen = document.getElementById(screenId);
@@ -1409,24 +1269,19 @@
             }
         }
 
-
         // --- App 4 (Admin) Logic ---
         let currentScreen_Admin = 'screen-dashboard-urgent';
-
         function showScreen_Admin(screenId) {
             document.querySelectorAll('#app-admin .admin-screen').forEach(el => el.classList.add('hidden'));
             const targetScreen = document.getElementById(screenId);
-
             if(targetScreen){
                  targetScreen.classList.remove('hidden');
-                // Handle active nav
                 document.querySelectorAll('#app-admin .sidebar-nav a').forEach(a => a.classList.remove('active'));
                  const activeLink = document.querySelector(`#app-admin .sidebar-nav a[onclick="showScreen_Admin('${screenId}')"]`);
                  if (activeLink) activeLink.classList.add('active');
-                 currentScreen_Admin = screenId; // Update current screen state
+                 currentScreen_Admin = screenId;
             } else {
                 console.error("Admin screen not found:", screenId);
-                // Fallback to default admin screen
                 document.getElementById('screen-dashboard-urgent').classList.remove('hidden');
                 const defaultLink = document.querySelector(`#app-admin .sidebar-nav a[onclick="showScreen_Admin('screen-dashboard-urgent')"]`);
                 if (defaultLink) defaultLink.classList.add('active');
@@ -1437,28 +1292,19 @@
         // --- Initialize ---
         document.addEventListener('DOMContentLoaded', () => {
              try {
-                 // Set initial screen for each persona safely
                  showScreen_Customer('screen-dashboard');
                  showScreen_Checker('screen-dashboard-ck');
                  showScreen_AD('screen-dashboard-ad');
                  showScreen_Admin('screen-dashboard-urgent');
-
-                 // Show the first app (Customer) by default
-                 showAppView('app-customer');
-
-                 // Request 3: Generate the dynamic calendar on load
-                 generateCalendar(2025, 9); // October 2025 (month is 9)
-
-                 // Ensure feedback nav is initially disabled
+                 showAppView('app-customer'); // Show customer view first
+                 generateCalendar(2025, 9); // Generate calendar based on October 2025
                  disableFeedbackNav();
-
-             } catch (error) {
-                 console.error("Initialization error:", error);
-             }
+                  // Initial state: hide options
+                  document.getElementById('persona-options').classList.add('hidden');
+                  isPersonaSwitcherOpen = false;
+             } catch (error) { console.error("Initialization error:", error); }
         });
 
     </script>
 </body>
 </html>
-
-
